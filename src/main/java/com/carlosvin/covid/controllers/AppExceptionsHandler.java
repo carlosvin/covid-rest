@@ -1,4 +1,4 @@
-package com.carlosvin.covid.resources;
+package com.carlosvin.covid.controllers;
 
 import javax.validation.ValidationException;
 

@@ -10,8 +10,6 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.stream.Stream;
 
-import org.springframework.stereotype.Service;
-
 import com.carlosvin.covid.models.CovidDataEntry;
 import com.opencsv.CSVReader;
 import com.opencsv.bean.CsvToBean;
@@ -21,14 +19,14 @@ import com.opencsv.bean.HeaderColumnNameMappingStrategy;
 // TODO Maybe it is worthy reading from https://www.ecdc.europa.eu/sites/default/files/documents/COVID-19-geographic-disbtribution-worldwide-2020-03-15.xls
 // It is more official and data model is more consistent
 
-@Service
+// @Service
 public class DataSourceCsv implements DataSource {
 	private static final DateTimeFormatter DF = DateTimeFormatter.ofPattern("MM-dd-yyyy");
 	private static final String URL_PREFIX = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/";
 	private LocalDate date;
 	
 	private URL getUrl() throws MalformedURLException {
-		date = LocalDate.now(); //.minusDays(1);
+		date = LocalDate.now();
 		return new URL(
 				String.format(
 						URL_PREFIX + 

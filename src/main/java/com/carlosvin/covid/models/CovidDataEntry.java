@@ -7,10 +7,11 @@ public interface CovidDataEntry {
 
 	@NotBlank
 	public String getCountry();
+	@NotBlank
+	public String getCountryCode();
 
 	public int getConfirmed();
 
 	public int getNewDeaths();
 	
-	public int getRecovered();
 }

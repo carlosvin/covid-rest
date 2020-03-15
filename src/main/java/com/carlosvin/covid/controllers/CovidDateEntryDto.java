@@ -1,4 +1,4 @@
-package com.carlosvin.covid.resources;
+package com.carlosvin.covid.controllers;
 
 import java.util.Date;
 
@@ -10,14 +10,14 @@ public class CovidDateEntryDto implements CovidDataEntry {
 	
 	private final long date;
 	private final String country;
+	private final String countryCode;
 	private final int deaths;
 	private final int confirmed;
-	private final int recovered;
 
-	public CovidDateEntryDto (Date date, String country, int recovered, int newCases, int newDeaths) {
+	public CovidDateEntryDto (Date date, String country, String countryCode, int newCases, int newDeaths) {
 		this.date = date.getTime();
 		this.country = country;
-		this.recovered = recovered;
+		this.countryCode = countryCode;
 		this.confirmed = newCases;
 		this.deaths = newDeaths;
 	}
@@ -43,8 +43,8 @@ public class CovidDateEntryDto implements CovidDataEntry {
 	}
 
 	@Override
-	public int getRecovered() {
-		return recovered;
+	public @NotBlank String getCountryCode() {
+		return countryCode;
 	}
 
 }

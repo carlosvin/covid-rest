@@ -1,4 +1,4 @@
-package com.carlosvin.covid.resources;
+package com.carlosvin.covid.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

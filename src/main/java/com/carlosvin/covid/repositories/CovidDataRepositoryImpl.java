@@ -9,8 +9,8 @@ import javax.validation.constraints.Size;
 
 import org.springframework.stereotype.Repository;
 
+import com.carlosvin.covid.controllers.CovidDateEntryDto;
 import com.carlosvin.covid.models.CovidDataEntry;
-import com.carlosvin.covid.resources.CovidDateEntryDto;
 
 @Repository
 public class CovidDataRepositoryImpl implements CovidDataRepository {
@@ -39,10 +39,10 @@ public class CovidDataRepositoryImpl implements CovidDataRepository {
 	public void init(Stream<CovidDataEntry> fetchData) {
 		byCountryByDate.clear();
 		fetchData.forEach(c -> {
-			Map<Long, CovidDataEntry> byDate = byCountryByDate.get(c.getCountry());
+			Map<Long, CovidDataEntry> byDate = byCountryByDate.get(c.getCountryCode());
 			if (byDate == null) {
 				byDate = new HashMap<Long, CovidDataEntry>();
-				byCountryByDate.put(c.getCountry(), byDate);
+				byCountryByDate.put(c.getCountryCode(), byDate);
 			}
 			CovidDataEntry entry = byDate.get(c.getDate());
 			if (entry == null) {
@@ -57,7 +57,7 @@ public class CovidDataRepositoryImpl implements CovidDataRepository {
 		return new CovidDateEntryDto(
 				new Date(a.getDate()), 
 				a.getCountry(), 
-				a.getRecovered() + b.getRecovered(), 
+				a.getCountryCode(), 
 				a.getConfirmed() + b.getConfirmed(), 
 				a.getNewDeaths() + b.getNewDeaths());
 	}

@@ -41,7 +41,6 @@ public class CovidDataEntryCsv implements CovidDataEntry {
 		return confirmed;
 	}
 
-	@Override
 	public int getRecovered() {
 		return recovered;
 	}
@@ -49,6 +48,11 @@ public class CovidDataEntryCsv implements CovidDataEntry {
 	public CovidDataEntryCsv setDate(long date) {
 		this.date = date;
 		return this;
+	}
+
+	@Override
+	public @NotBlank String getCountryCode() {
+		return country;
 	}
 
 }
