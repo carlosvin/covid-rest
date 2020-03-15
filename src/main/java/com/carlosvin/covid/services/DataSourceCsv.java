@@ -18,6 +18,9 @@ import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.HeaderColumnNameMappingStrategy;
 
+// TODO Maybe it is worthy reading from https://www.ecdc.europa.eu/sites/default/files/documents/COVID-19-geographic-disbtribution-worldwide-2020-03-15.xls
+// It is more official and data model is more consistent
+
 @Service
 public class DataSourceCsv implements DataSource {
 	private static final DateTimeFormatter DF = DateTimeFormatter.ofPattern("MM-dd-yyyy");
@@ -25,7 +28,7 @@ public class DataSourceCsv implements DataSource {
 	private LocalDate date;
 	
 	private URL getUrl() throws MalformedURLException {
-		date = LocalDate.now().minusDays(1);
+		date = LocalDate.now(); //.minusDays(1);
 		return new URL(
 				String.format(
 						URL_PREFIX + 
