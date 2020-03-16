@@ -1,10 +1,9 @@
 package com.carlosvin.covid;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.hamcrest.Matchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -42,16 +41,34 @@ class AppTest {
 	    Mockito.when(clockMock.instant()).thenReturn(clock.instant());
 	    Mockito.when(clockMock.millis()).thenReturn(clock.millis());
 	}
+	
+	@Test
+	void getCountries() throws Exception {
+		this.mockMvc
+			.perform(get("/countries"))
+			.andDo(print())
+			.andExpect(status().isOk())
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$", hasSize(122)))
+            .andExpect(jsonPath("$[0].confirmedCases", greaterThan(0)))
+        	.andExpect(jsonPath("$[100].confirmedCases", greaterThan(0)));
+            //.andExpect(jsonPath("$.confirmed", comparesEqualTo(100)))
+            //.andExpect(jsonPath("$.deaths", comparesEqualTo(100)));
+	}
 
 	@Test
 	void getACountry() throws Exception {
 		this.mockMvc
 			.perform(get("/countries/ES"))
 			.andDo(print())
-			.andExpect(status().isOk());
-            //.andExpect(jsonPath("$.dates").isArray())
-            //.andExpect(jsonPath("$.dates", hasSize(75)));
+			.andExpect(status().isOk())
+            .andExpect(jsonPath("$.dates").isArray())
+            .andExpect(jsonPath("$.dates", hasSize(75)))
+            .andExpect(jsonPath("$.confirmed", comparesEqualTo(100)))
+			.andExpect(jsonPath("$.deaths", comparesEqualTo(100)));
 	}
+	
+	
 	
 	/*@Test
 	void postAndGet() throws Exception {

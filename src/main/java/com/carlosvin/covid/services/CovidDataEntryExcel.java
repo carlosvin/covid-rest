@@ -1,70 +1,94 @@
 package com.carlosvin.covid.services;
 
-import java.util.Date;
-
-import javax.validation.constraints.NotBlank;
+import java.time.ZonedDateTime;
 
 import org.apache.poi.ss.usermodel.Row;
 
-import com.carlosvin.covid.models.CovidDataEntry;
+import com.carlosvin.covid.models.Country;
+import com.carlosvin.covid.models.DateCountryStats;
+import com.carlosvin.covid.models.DateStats;
 
 enum Cells {
-	Date(0),
-	Country(1),
-	NewConfCases(2),
-	NewDeaths(3),
-	CountryCode(4);
+	Date(0), Country(1), NewConfCases(2), NewDeaths(3), CountryCode(4);
 
 	private final int value;
 
 	private Cells(final int value) {
 		this.value = value;
 	}
-	
+
 	public int getValue() {
 		return value;
 	}
 }
 
-public class CovidDataEntryExcel implements CovidDataEntry {
+public class CovidDataEntryExcel implements DateCountryStats {
 
-	private final Date date;
-	private String country;
-	private String countryCode;
-	private int newConfCases;
-	private int newDeaths;
+	static class DateEntryExcel implements DateStats {
+		private final ZonedDateTime date;
+		private final int newConfCases;
+		private final int newDeaths;
+
+		public DateEntryExcel(Row r) {
+			date = DateUtils.convert(r.getCell(Cells.Date.getValue()).getDateCellValue());
+			newConfCases = (int) r.getCell(Cells.NewConfCases.getValue()).getNumericCellValue();
+			newDeaths = (int) r.getCell(Cells.NewDeaths.getValue()).getNumericCellValue();
+		}
+
+		@Override
+		public int getConfirmed() {
+			return newConfCases;
+		}
+
+		@Override
+		public int getDeaths() {
+			return newDeaths;
+		}
+
+		@Override
+		public ZonedDateTime getDate() {
+			return date;
+		}
+	}
+
+	static class CountryEntryExcel implements Country {
+
+		private final String country;
+		private final String countryCode;
+
+		public CountryEntryExcel(Row r) {
+			country = r.getCell(Cells.Country.getValue()).getStringCellValue();
+			countryCode = r.getCell(Cells.CountryCode.getValue()).getStringCellValue();
+		}
+
+		@Override
+		public String getCountry() {
+			return country;
+		}
+
+		@Override
+		public String getCode() {
+			return countryCode;
+		}
+
+	}
+
+	private final CountryEntryExcel country;
+	private final DateEntryExcel date;
 
 	public CovidDataEntryExcel(Row r) {
-		date = r.getCell(Cells.Date.getValue()).getDateCellValue();
-		country = r.getCell(Cells.Country.getValue()).getStringCellValue();
-		countryCode = r.getCell(Cells.CountryCode.getValue()).getStringCellValue();
-		newConfCases = (int)r.getCell(Cells.NewConfCases.getValue()).getNumericCellValue();
-		newDeaths = (int)r.getCell(Cells.NewDeaths.getValue()).getNumericCellValue();
+		date = new DateEntryExcel(r);
+		country = new CountryEntryExcel(r);
 	}
 
 	@Override
-	public long getDate() {
-		return date.getTime();
+	public DateStats getDateStats() {
+		return date;
 	}
 
 	@Override
-	public @NotBlank String getCountry() {
+	public Country getCountry() {
 		return country;
-	}
-
-	@Override
-	public int getConfirmed() {
-		return newConfCases;
-	}
-
-	@Override
-	public int getNewDeaths() {
-		return newDeaths;
-	}
-
-	@Override
-	public @NotBlank String getCountryCode() {
-		return countryCode;
 	}
 
 }

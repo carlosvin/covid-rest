@@ -1,7 +1,9 @@
 package com.carlosvin.covid.services;
 
 import java.io.IOException;
-import java.sql.Date;
+import java.time.ZonedDateTime;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import javax.validation.constraints.Size;
 
@@ -10,7 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.carlosvin.covid.models.CovidDataEntry;
+import com.carlosvin.covid.models.CountryStats;
+import com.carlosvin.covid.models.DateStats;
 import com.carlosvin.covid.repositories.CovidDataRepository;
 
 @Service
@@ -48,22 +51,30 @@ public class CovidEntriesServiceImpl implements CovidEntriesService {
 	}
 
 	@Override
-	public Iterable<CovidDataEntry> getEntries(@Size(max = 2, min = 2) String countryCode) throws NotFoundException {
+	public Iterable<DateStats> getEntries(@Size(max = 2, min = 2) String countryCode) throws NotFoundException {
 		load();
-		Iterable<CovidDataEntry> entries = repo.getEntries(countryCode);
+		/*Iterable<DateStats> entries = repo.getEntries(countryCode);
 		if (entries == null) {
 			throw new NotFoundException("No entries for country " + countryCode);
 		}
-		return entries;
+		return entries;*/
+		return null;
 	}
 
 	@Override
-	public CovidDataEntry getEntry(@Size(max = 2, min = 2) String countryCode, long date) throws NotFoundException {
+	public DateStats getEntry(@Size(max = 2, min = 2) String countryCode, ZonedDateTime date) throws NotFoundException {
 		load();
-		CovidDataEntry entry = repo.getEntry(countryCode, date);
+		/*DateStats entry = repo.getEntry(countryCode, date);
 		if (entry == null) {
-			throw new NotFoundException("No entries for country " + countryCode + " in date " + new Date(date));
+			throw new NotFoundException("No entries for country " + countryCode + " in date " + date);
 		}
-		return entry;
+		return entry;*/
+		return null;
+	}
+
+	@Override
+	public Stream<? extends CountryStats> getCountries() throws NotFoundException {
+		load();
+		return StreamSupport.stream(repo.getCountries().spliterator(), false);
 	}
 }

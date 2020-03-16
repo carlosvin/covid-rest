@@ -1,14 +1,48 @@
 package com.carlosvin.covid.repositories;
 
+import java.time.ZonedDateTime;
 import java.util.stream.Stream;
 
-import javax.validation.constraints.Size;
-
-import com.carlosvin.covid.models.CovidDataEntry;
+import com.carlosvin.covid.models.CountryStats;
+import com.carlosvin.covid.models.DateCountryStats;
+import com.carlosvin.covid.models.DateStats;
 
 public interface CovidDataRepository {
 
-	Iterable<CovidDataEntry> getEntries(@Size(max = 2, min= 2) String countryCode);
-	CovidDataEntry getEntry(@Size(max = 2, min= 2) String countryCode, long date);
-	void init(Stream<CovidDataEntry> fetchData);
+	/**
+	 * Initialises repository data
+	 * */
+	void init(Stream<DateCountryStats> fetchData);
+	
+	/**
+	 * @return Country statistics aggregate
+	 * */
+	CountryStats getAggregateStats(String countryCode);
+	
+	/**
+	 * @return Country statistics aggregate
+	 * */
+	DateStats getAggregateStats(ZonedDateTime date);
+	
+	
+	/**
+	 * @return Statistics for a country in a date
+	 * */
+	DateStats getStats(String countryCode, ZonedDateTime date);
+	
+	/**
+	 * @return All statistics by country on that date
+	 * */
+	Iterable<CountryStats> getStats(ZonedDateTime date);
+	
+	/**
+	 * @return All date statistics for a country
+	 * */
+	Iterable<DateStats> getStats(String countryCode);
+
+	/**
+	 * @return all countries statistics
+	 * */
+	Iterable<? extends CountryStats> getCountries();
+
 }

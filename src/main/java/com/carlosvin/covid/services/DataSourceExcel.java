@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
-import com.carlosvin.covid.models.CovidDataEntry;
+import com.carlosvin.covid.models.DateCountryStats;
 
 @Service
 @PropertySource("classpath:application.properties")
@@ -44,7 +44,7 @@ public class DataSourceExcel implements DataSource {
 	}
 
 	@Override
-	public Stream<CovidDataEntry> fetchData() throws IOException {
+	public Stream<DateCountryStats> fetchData() throws IOException {
 		try (Workbook wb = WorkbookFactory.create(getUrl().openStream())) {
 			Sheet sheet = wb.getSheetAt(0);
 			sheet.removeRow(sheet.getRow(0));

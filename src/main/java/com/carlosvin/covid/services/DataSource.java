@@ -3,8 +3,8 @@ package com.carlosvin.covid.services;
 import java.io.IOException;
 import java.util.stream.Stream;
 
-import com.carlosvin.covid.models.CovidDataEntry;
+import com.carlosvin.covid.models.DateCountryStats;
 
 public interface DataSource {
-	Stream<CovidDataEntry> fetchData () throws IOException;
+	Stream<DateCountryStats> fetchData () throws IOException;
 }
