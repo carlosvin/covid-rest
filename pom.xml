@@ -16,7 +16,11 @@
 	<description>COVID19 REST API</description>
 
 	<properties>
-		<java.version>1.9</java.version>
+		<java.version>11</java.version>
+		<appengine.maven.plugin>2.2.0</appengine.maven.plugin>
+	    <app.deploy.projectId>${project.artifactId}</app.deploy.projectId>
+	    <app.deploy.version>1</app.deploy.version>
+	    
 	</properties>
 
 	<dependencies>
@@ -56,10 +60,20 @@
 	</dependencies>
 
 	<build>
+		<!-- for hot reload of the web application -->
+		<outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>appengine-maven-plugin</artifactId>
+				<version>${appengine.maven.plugin}</version>
+				<configuration>
+					<!-- deploy configuration -->
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
