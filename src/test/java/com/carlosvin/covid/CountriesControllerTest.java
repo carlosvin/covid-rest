@@ -36,7 +36,7 @@ class CountriesControllerTest {
 	
 	@BeforeEach
 	void setUp () {
-		Clock clock = Clock.fixed(Instant.parse("2020-03-14T10:10:30Z"), ZoneId.of("UTC"));
+		Clock clock = Clock.fixed(Instant.parse("2020-03-17T10:10:30Z"), ZoneId.of("UTC"));
 		Mockito.when(clockMock.getZone()).thenReturn(clock.getZone());
 	    Mockito.when(clockMock.instant()).thenReturn(clock.instant());
 	    Mockito.when(clockMock.millis()).thenReturn(clock.millis());
@@ -49,7 +49,7 @@ class CountriesControllerTest {
 			.andDo(print())
 			.andExpect(status().isOk())
             .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$", hasSize(122)))
+            .andExpect(jsonPath("$", hasSize(145)))
             .andExpect(jsonPath("$[0].confirmedCases", greaterThan(0)))
             .andExpect(jsonPath("$[0].deathsNumber",comparesEqualTo(0)))
             .andExpect(jsonPath("$[0].countryCode",comparesEqualTo("PS")))
@@ -63,8 +63,8 @@ class CountriesControllerTest {
 			.perform(get("/countries/ES"))
 			.andDo(print())
 			.andExpect(status().isOk())
-            .andExpect(jsonPath("$.confirmedCases", comparesEqualTo(4231)))
-            .andExpect(jsonPath("$.deathsNumber",comparesEqualTo(121)))
+            .andExpect(jsonPath("$.confirmedCases", comparesEqualTo(9191)))
+            .andExpect(jsonPath("$.deathsNumber",comparesEqualTo(309)))
             .andExpect(jsonPath("$.countryCode",comparesEqualTo("ES")))
             .andExpect(jsonPath("$.countryName",comparesEqualTo("Spain")));
 	}
@@ -75,12 +75,12 @@ class CountriesControllerTest {
 			.perform(get("/countries/ES/dates"))
 			.andDo(print())
 			.andExpect(status().isOk())
-            .andExpect(jsonPath("$.*", hasSize(75)))
+            .andExpect(jsonPath("$.*", hasSize(78)))
             .andExpect(jsonPath("$.18334.confirmedCases", comparesEqualTo(1227)))
             .andExpect(jsonPath("$.18334.deathsNumber",comparesEqualTo(37)))
             .andExpect(jsonPath("$.18334.date", comparesEqualTo("2020-03-13T00:00:00Z")))
             .andExpect(jsonPath("$.18334.epochDays", comparesEqualTo(18334)))
-            .andExpect(jsonPath("$.18335").doesNotExist());
+            .andExpect(jsonPath("$.18338").doesNotExist());
 	}
 	
 	@Test

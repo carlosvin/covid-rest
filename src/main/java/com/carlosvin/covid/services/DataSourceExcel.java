@@ -35,11 +35,11 @@ public class DataSourceExcel implements DataSource {
 	}
 
 	private URL getUrl() {
-		String url = String.format(baseUrl + DF.format(LocalDate.now(clock)) + ".xls");
+		String urlStr = String.format(baseUrl + DF.format(LocalDate.now(clock)) + ".xlsx");
 		try {
-			return new URL(url);
+			return new URL(urlStr);
 		} catch (MalformedURLException e) {
-			return getClass().getClassLoader().getResource(url);
+			return getClass().getClassLoader().getResource(urlStr);
 		}
 	}
 

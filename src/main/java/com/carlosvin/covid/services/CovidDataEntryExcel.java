@@ -9,7 +9,7 @@ import com.carlosvin.covid.models.DateCountryStats;
 import com.carlosvin.covid.models.DateStats;
 
 enum Cells {
-	Date(0), Country(1), NewConfCases(2), NewDeaths(3), CountryCode(4);
+	Date(0), Cases(4), NewDeaths(5), Country(6), CountryCode(7);
 
 	private final int value;
 
@@ -31,7 +31,7 @@ public class CovidDataEntryExcel implements DateCountryStats {
 
 		public DateEntryExcel(Row r) {
 			date = DateUtils.convert(r.getCell(Cells.Date.getValue()).getDateCellValue());
-			newConfCases = (int) r.getCell(Cells.NewConfCases.getValue()).getNumericCellValue();
+			newConfCases = (int) r.getCell(Cells.Cases.getValue()).getNumericCellValue();
 			newDeaths = (int) r.getCell(Cells.NewDeaths.getValue()).getNumericCellValue();
 		}
 
