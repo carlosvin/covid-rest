@@ -10,7 +10,12 @@ import com.carlosvin.covid.models.DateStats;
 
 public interface CovidEntriesService {
 	Iterable<DateStats> getEntries(@Size(max = 2, min= 2) String countryCode) throws NotFoundException;
-	DateStats getEntry(@Size(max = 2, min= 2) String countryCode, ZonedDateTime date) throws NotFoundException;
+	
+	DateStats getCountry(String countryCode, ZonedDateTime date) throws NotFoundException;
+	CountryStats getCountry(String countryCode) throws NotFoundException;
+
 	Stream<? extends CountryStats> getCountries() throws NotFoundException;
+
+	Stream<? extends DateStats> getDatesByCountry(String country) throws NotFoundException;
 
 }

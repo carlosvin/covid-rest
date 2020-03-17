@@ -62,19 +62,30 @@ public class CovidEntriesServiceImpl implements CovidEntriesService {
 	}
 
 	@Override
-	public DateStats getEntry(@Size(max = 2, min = 2) String countryCode, ZonedDateTime date) throws NotFoundException {
+	public DateStats getCountry(@Size(max = 2, min = 2) String countryCode, ZonedDateTime date) throws NotFoundException {
 		load();
-		/*DateStats entry = repo.getEntry(countryCode, date);
-		if (entry == null) {
-			throw new NotFoundException("No entries for country " + countryCode + " in date " + date);
+		DateStats stats = repo.getStats(countryCode, date);
+		if (stats == null) {
+			throw new NotFoundException("There are no stats for country " + countryCode + " in date " + date);
 		}
-		return entry;*/
-		return null;
+		return stats;
 	}
 
 	@Override
 	public Stream<? extends CountryStats> getCountries() throws NotFoundException {
 		load();
 		return StreamSupport.stream(repo.getCountries().spliterator(), false);
+	}
+
+	@Override
+	public CountryStats getCountry(String countryCode) throws NotFoundException {
+		load();
+		return repo.getAggregateStats(countryCode);
+	}
+
+	@Override
+	public Stream<? extends DateStats> getDatesByCountry(String country) throws NotFoundException {
+		load();
+		return StreamSupport.stream(repo.getStats(country).spliterator(), false);
 	}
 }

@@ -26,7 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource(properties = { "base.url=data-" })
-class AppTest {
+class CountriesControllerTest {
 	
 	@MockBean
     private Clock clockMock;
@@ -51,9 +51,10 @@ class AppTest {
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$", hasSize(122)))
             .andExpect(jsonPath("$[0].confirmedCases", greaterThan(0)))
+            .andExpect(jsonPath("$[0].deathsNumber",comparesEqualTo(0)))
+            .andExpect(jsonPath("$[0].countryCode",comparesEqualTo("PS")))
+            .andExpect(jsonPath("$[0].countryName",comparesEqualTo("Palestine")))
         	.andExpect(jsonPath("$[100].confirmedCases", greaterThan(0)));
-            //.andExpect(jsonPath("$.confirmed", comparesEqualTo(100)))
-            //.andExpect(jsonPath("$.deaths", comparesEqualTo(100)));
 	}
 
 	@Test
@@ -62,30 +63,36 @@ class AppTest {
 			.perform(get("/countries/ES"))
 			.andDo(print())
 			.andExpect(status().isOk())
-            .andExpect(jsonPath("$.dates").isArray())
-            .andExpect(jsonPath("$.dates", hasSize(75)))
-            .andExpect(jsonPath("$.confirmed", comparesEqualTo(100)))
-			.andExpect(jsonPath("$.deaths", comparesEqualTo(100)));
+            .andExpect(jsonPath("$.confirmedCases", comparesEqualTo(4231)))
+            .andExpect(jsonPath("$.deathsNumber",comparesEqualTo(121)))
+            .andExpect(jsonPath("$.countryCode",comparesEqualTo("ES")))
+            .andExpect(jsonPath("$.countryName",comparesEqualTo("Spain")));
 	}
 	
-	
-	
-	/*@Test
-	void postAndGet() throws Exception {
-		MvcResult result = this.mockMvc
-			.perform(post("/countries/Spain"))
-			.andDo(print())
-			.andExpect(status().isOk())
-			.andExpect(content().string(containsString("name of ")))
-			.andReturn();
-		String json = result.getResponse().getContentAsString();
-		String id = JsonPath.read(json, "$.id");
-		
+	@Test
+	void getDates() throws Exception {
 		this.mockMvc
-			.perform(get("/tasks/{id}", id))
+			.perform(get("/countries/ES/dates"))
 			.andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(content().json(json));
-	}*/
-
+            .andExpect(jsonPath("$.*", hasSize(75)))
+            .andExpect(jsonPath("$.18334.confirmedCases", comparesEqualTo(1227)))
+            .andExpect(jsonPath("$.18334.deathsNumber",comparesEqualTo(37)))
+            .andExpect(jsonPath("$.18334.date", comparesEqualTo("2020-03-13T00:00:00Z")))
+            .andExpect(jsonPath("$.18334.epochDays", comparesEqualTo(18334)))
+            .andExpect(jsonPath("$.18335").doesNotExist());
+	}
+	
+	@Test
+	void getDate() throws Exception {
+		this.mockMvc
+			.perform(get("/countries/ES/dates/18334"))
+			.andDo(print())
+			.andExpect(status().isOk())
+            .andExpect(jsonPath("$.confirmedCases", comparesEqualTo(1227)))
+            .andExpect(jsonPath("$.deathsNumber",comparesEqualTo(37)))
+            .andExpect(jsonPath("$.date", comparesEqualTo("2020-03-13T00:00:00Z")))
+            .andExpect(jsonPath("$.epochDays", comparesEqualTo(18334)));
+	}
+	
 }
