@@ -4,6 +4,7 @@ import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import com.carlosvin.covid.models.CountryStats;
 import com.carlosvin.covid.models.DateCountryStats;
@@ -24,6 +25,8 @@ public class DateRepo implements Stats {
 			dates.put(id, date);
 		}
 		date.add(c);
+		confirmed += dateStats.getConfirmed();
+		deaths += dateStats.getDeaths();
 	}
 
 	@Override
@@ -46,6 +49,10 @@ public class DateRepo implements Stats {
 			return d.getCountries();
 		}
 		return Collections.emptyList();
+	}
+
+	public Stream<? extends DateStats> get() {
+		return dates.values().stream();
 	}
 
 }

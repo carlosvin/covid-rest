@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.carlosvin.covid.models.CountryStats;
 import com.carlosvin.covid.models.DateStats;
 import com.carlosvin.covid.repositories.CovidDataRepository;
+import com.carlosvin.covid.services.exceptions.NotFoundException;
 
 @Service
 public class CovidEntriesServiceImpl implements CovidEntriesService {
@@ -45,20 +46,13 @@ public class CovidEntriesServiceImpl implements CovidEntriesService {
 				lastSaved = System.currentTimeMillis();
 				LOG.info("Data fetched and loaded into the repository");
 			} catch (IOException e) {
-				throw new NotFoundException(e.getMessage());
+				if (lastSaved > 0) {
+					LOG.warn("Problem refreshing repository information ", e);
+				} else {
+					throw new NotFoundException(e.getMessage());
+				}
 			}
 		}
-	}
-
-	@Override
-	public Iterable<DateStats> getEntries(@Size(max = 2, min = 2) String countryCode) throws NotFoundException {
-		load();
-		/*Iterable<DateStats> entries = repo.getEntries(countryCode);
-		if (entries == null) {
-			throw new NotFoundException("No entries for country " + countryCode);
-		}
-		return entries;*/
-		return null;
 	}
 
 	@Override
@@ -87,5 +81,11 @@ public class CovidEntriesServiceImpl implements CovidEntriesService {
 	public Stream<? extends DateStats> getDatesByCountry(String country) throws NotFoundException {
 		load();
 		return StreamSupport.stream(repo.getStats(country).spliterator(), false);
+	}
+
+	@Override
+	public Stream<? extends DateStats> getDates() throws NotFoundException {
+		load();
+		return repo.getDates();
 	}
 }

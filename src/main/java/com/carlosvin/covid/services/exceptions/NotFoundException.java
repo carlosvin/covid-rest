@@ -1,4 +1,4 @@
-package com.carlosvin.covid.services;
+package com.carlosvin.covid.services.exceptions;
 
 
 public class NotFoundException extends Exception {

@@ -15,7 +15,7 @@ import com.carlosvin.covid.controllers.dtos.CountryStatsDto;
 import com.carlosvin.covid.controllers.dtos.DateStatsDto;
 import com.carlosvin.covid.services.CovidEntriesService;
 import com.carlosvin.covid.services.DateUtils;
-import com.carlosvin.covid.services.NotFoundException;
+import com.carlosvin.covid.services.exceptions.NotFoundException;
 
 @RestController
 public class CountriesController {

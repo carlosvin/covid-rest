@@ -32,12 +32,15 @@ class DateModel implements DateStats {
 	public void add(DateCountryStats c) {
 		Country country = c.getCountry();
 		String id = country.getId();
+		Stats stats = c.getDateStats();
 		Stats saved = countriesRepo.get(id);
 		if (saved == null) {
-			countriesRepo.put(id, new CountryModel(country, c.getDateStats()));
+			countriesRepo.put(id, new CountryModel(country, stats));
 		} else {
-			countriesRepo.put(id, new CountryModel(country, saved, c.getDateStats()));
+			countriesRepo.put(id, new CountryModel(country, saved, stats));
 		}
+		confirmed += stats.getConfirmed();
+		deaths += stats.getDeaths();
 	}
 	
 	public  ZonedDateTime getCountry() {

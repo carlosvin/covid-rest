@@ -59,5 +59,10 @@ public class CovidDataRepositoryImpl implements CovidDataRepository {
 		return countries.get();
 	}
 
+	@Override
+	public Stream<? extends DateStats> getDates() {
+		return dates.get();
+	}
+
 
 }

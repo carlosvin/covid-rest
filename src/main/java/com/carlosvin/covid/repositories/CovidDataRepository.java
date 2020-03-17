@@ -45,4 +45,6 @@ public interface CovidDataRepository {
 	 * */
 	Iterable<? extends CountryStats> getCountries();
 
+	Stream<? extends DateStats> getDates();
+
 }
