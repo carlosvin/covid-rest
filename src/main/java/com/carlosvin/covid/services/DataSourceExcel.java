@@ -1,5 +1,6 @@
 package com.carlosvin.covid.services;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -44,7 +45,7 @@ public class DataSourceExcel implements DataSource {
 
 	@Override
 	public Stream<DateCountryStats> fetchData() throws IOException {
-		try (Workbook wb = WorkbookFactory.create(getUrl().openStream())) {
+		try (Workbook wb = WorkbookFactory.create(new BufferedInputStream(getUrl().openStream()))) {
 			Sheet sheet = wb.getSheetAt(0);
 			sheet.removeRow(sheet.getRow(0));
 			return StreamSupport.stream(sheet.spliterator(), false).map(r -> new CovidDataEntryExcel(r));
