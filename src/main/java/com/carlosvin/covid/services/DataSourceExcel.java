@@ -10,7 +10,6 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import org.apache.poi.EncryptedDocumentException;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
@@ -49,7 +48,7 @@ public class DataSourceExcel implements DataSource {
 			Sheet sheet = wb.getSheetAt(0);
 			sheet.removeRow(sheet.getRow(0));
 			return StreamSupport.stream(sheet.spliterator(), false).map(r -> new CovidDataEntryExcel(r));
-		} catch (EncryptedDocumentException | InvalidFormatException e) {
+		} catch (EncryptedDocumentException e) {
 			throw new IOException(e);
 		}
 	}
