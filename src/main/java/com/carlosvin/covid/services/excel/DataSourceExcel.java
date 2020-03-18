@@ -1,19 +1,19 @@
 package com.carlosvin.covid.services.excel;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
-import org.apache.poi.EncryptedDocumentException;
-import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -21,10 +21,12 @@ import org.springframework.stereotype.Service;
 
 import com.carlosvin.covid.models.DateCountryStats;
 import com.carlosvin.covid.services.DataSource;
+import com.monitorjbl.xlsx.StreamingReader;
 
 @Service
 @PropertySource("classpath:application.properties")
 public class DataSourceExcel implements DataSource {
+	private static final Logger LOG = LoggerFactory.getLogger(DataSourceExcel.class);
 	private static final DateTimeFormatter DF = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	private final String baseUrl;
 	private final Clock clock;
@@ -51,12 +53,32 @@ public class DataSourceExcel implements DataSource {
 	
 	@Override
 	public Stream<DateCountryStats> fetchData(int daysToSubtract) throws IOException {
-		try (Workbook wb = WorkbookFactory.create(new BufferedInputStream(getUrl(daysToSubtract).openStream()))) {
-			Sheet sheet = wb.getSheetAt(0);
-			sheet.removeRow(sheet.getRow(0));
-			return StreamSupport.stream(sheet.spliterator(), false).map(r -> new CovidDataEntryExcel(r));
-		} catch (EncryptedDocumentException e) {
-			throw new IOException(e);
+		
+		try (Workbook wb = StreamingReader.builder()
+		        .rowCacheSize(100)    // number of rows to keep in memory (defaults to 10)
+		        .bufferSize(4096)     // buffer size to use when reading InputStream to file (defaults to 1024)
+		        .open(getUrl(daysToSubtract).openStream())) {
+			List<DateCountryStats> l = new LinkedList<DateCountryStats>();
+
+			for (Row r: wb.getSheetAt(0)) {
+				try {
+					l.add(new CovidDataEntryExcel(r));
+				} catch (Exception e) {
+					LOG.info("Ignoring row with invalid format: ", r);
+				}
+			}
+			return l.stream();
+			/*return StreamSupport
+					.stream(wb.getSheetAt(0).spliterator(), false)
+					.skip(1)
+					.map(r -> {
+						try {
+							return (DateCountryStats)new CovidDataEntryExcel(r);
+						} catch (Exception e) {
+							return null;
+						}
+					} )
+					.filter(c -> c != null);*/
 		}
 	}
 

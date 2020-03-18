@@ -20,10 +20,15 @@ public class CovidDataRepositoryImpl implements CovidDataRepository {
 		CountryRepo countriesTmp = new CountryRepo();
 		DateRepo datesTmp = new DateRepo();
 		
-		fetchData.forEach(c -> {
-			countriesTmp.add(c);
-			datesTmp.add(c);
-		});
+		fetchData.filter(c -> { 
+			try { 
+				return c != null;
+			} catch (Exception e) {
+				return false;
+			}})
+		.peek(c -> countriesTmp.add(c))
+		.forEach(c -> datesTmp.add(c));
+		
 		
 		countries = countriesTmp;
 		dates = datesTmp;
