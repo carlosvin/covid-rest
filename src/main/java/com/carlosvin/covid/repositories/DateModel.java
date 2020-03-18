@@ -65,4 +65,8 @@ class DateModel implements DateStats {
 	public Stream<CountryStats> getCountries() {
 		return countriesRepo.values().stream();
 	}
+
+	public CountryStats get(String countryCode) {
+		return countriesRepo.get(countryCode);
+	}
 }

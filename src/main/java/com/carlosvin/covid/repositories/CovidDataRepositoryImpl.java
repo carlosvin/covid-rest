@@ -45,6 +45,12 @@ public class CovidDataRepositoryImpl implements CovidDataRepository {
 	}
 
 	@Override
+	public CountryStats getStats(ZonedDateTime date, String countryCode) {
+		return dates.get(date, countryCode);
+	}
+
+
+	@Override
 	public Stream<CountryStats> getStats(ZonedDateTime date) {
 		return dates.getCountries(date);
 	}
@@ -63,6 +69,5 @@ public class CovidDataRepositoryImpl implements CovidDataRepository {
 	public Stream<? extends DateStats> getDates() {
 		return dates.get();
 	}
-
 
 }

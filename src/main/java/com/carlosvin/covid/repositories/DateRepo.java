@@ -54,4 +54,12 @@ public class DateRepo implements Stats {
 		return dates.values().stream();
 	}
 
+	public CountryStats get(ZonedDateTime date, String countryCode) {
+		DateModel d = dates.get(date);
+		if (d != null) {
+			return d.get(countryCode);
+		}
+		return null;
+	}
+
 }

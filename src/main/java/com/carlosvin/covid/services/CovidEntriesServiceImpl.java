@@ -5,8 +5,6 @@ import java.time.ZonedDateTime;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import javax.validation.constraints.Size;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,16 +54,6 @@ public class CovidEntriesServiceImpl implements CovidEntriesService {
 	}
 
 	@Override
-	public DateStats getCountry(@Size(max = 2, min = 2) String countryCode, ZonedDateTime date) throws NotFoundException {
-		load();
-		DateStats stats = repo.getStats(countryCode, date);
-		if (stats == null) {
-			throw new NotFoundException("There are no stats for country " + countryCode + " in date " + date);
-		}
-		return stats;
-	}
-
-	@Override
 	public Stream<? extends CountryStats> getCountries() throws NotFoundException {
 		load();
 		return StreamSupport.stream(repo.getCountries().spliterator(), false);
@@ -103,5 +91,25 @@ public class CovidEntriesServiceImpl implements CovidEntriesService {
 	public Stream<? extends CountryStats> getCountries(ZonedDateTime date) throws NotFoundException {
 		load();
 		return repo.getStats(date);
+	}
+
+	@Override
+	public CountryStats getCountry(ZonedDateTime date, String countryCode) throws NotFoundException {
+		load();
+		CountryStats stats = repo.getStats(date, countryCode);
+		if (stats == null) {
+			throw new NotFoundException("There are no stats for country " + countryCode + " in date " + date);
+		}
+		return stats;
+	}
+
+	@Override
+	public DateStats getDate(String countryCode, ZonedDateTime date) throws NotFoundException {
+		load();
+		DateStats stats = repo.getStats(countryCode, date);
+		if (stats == null) {
+			throw new NotFoundException("There are no stats for country " + countryCode + " in date " + date);
+		}
+		return stats;
 	}
 }

@@ -24,11 +24,15 @@ public interface CovidDataRepository {
 	 * */
 	DateStats getAggregateStats(ZonedDateTime date);
 	
-	
 	/**
 	 * @return Statistics for a country in a date
 	 * */
 	DateStats getStats(String countryCode, ZonedDateTime date);
+	
+	/**
+	 * @return Statistics for a date in a country
+	 * */
+	CountryStats getStats(ZonedDateTime date, String countryCode);
 	
 	/**
 	 * @return All statistics by country on that date

@@ -76,5 +76,16 @@ class DatesControllerTest {
             .andExpect(jsonPath("$.ES.countryName", comparesEqualTo("Spain")));
 	}
 	
+	@Test
+	void getCountry() throws Exception {
+		this.mockMvc
+			.perform(get("/dates/18334/countries/ES"))
+			.andDo(print())
+			.andExpect(status().isOk())
+            .andExpect(jsonPath("$.confirmedCases", comparesEqualTo(1227)))
+            .andExpect(jsonPath("$.deathsNumber",comparesEqualTo(37)))
+            .andExpect(jsonPath("$.countryName", comparesEqualTo("Spain")));
+	}
+	
 	
 }

@@ -9,7 +9,8 @@ import com.carlosvin.covid.services.exceptions.NotFoundException;
 
 public interface CovidEntriesService {
 	
-	DateStats getCountry(String countryCode, ZonedDateTime date) throws NotFoundException;
+	CountryStats getCountry(ZonedDateTime date, String countryCode) throws NotFoundException;
+	DateStats getDate(String countryCode, ZonedDateTime date) throws NotFoundException;
 	
 	CountryStats getCountry(String countryCode) throws NotFoundException;
 

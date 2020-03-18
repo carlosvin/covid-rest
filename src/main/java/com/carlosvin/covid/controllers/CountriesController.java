@@ -46,7 +46,7 @@ public class CountriesController {
 	
 	@GetMapping("/countries/{country}/dates/{epochDays}")
 	public DateStatsDto getDateByCountry(@Size(min=2, max=2) @PathVariable String country, @PathVariable long epochDays) throws NotFoundException{
-		return new DateStatsDto(service.getCountry(country, DateUtils.convert(epochDays)));
+		return new DateStatsDto(service.getDate(country, DateUtils.convert(epochDays)));
 	}
 	
 }

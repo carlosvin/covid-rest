@@ -3,6 +3,8 @@ package com.carlosvin.covid.controllers;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.validation.constraints.Size;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,7 +37,6 @@ public class DatesController {
 	public DateStatsDto getDate(@PathVariable long epochDays) throws NotFoundException{
 		return new DateStatsDto(service.getDate(DateUtils.convert(epochDays)));
 	}
-	
 
 	@GetMapping("/dates/{epochDays}/countries")
 	public Map<String, CountryStatsDto> getCountries(@PathVariable long epochDays) throws NotFoundException{
@@ -44,6 +45,11 @@ public class DatesController {
 				.map(c -> new CountryStatsDto(c))
 				.collect(Collectors.toMap(c -> ((CountryStatsDto)c).countryCode, c -> (CountryStatsDto)c));
 
+	}
+	
+	@GetMapping("/dates/{epochDays}/countries/{country}")
+	public CountryStatsDto getDateByCountry(@PathVariable long epochDays, @Size(min=2, max=2) @PathVariable String country) throws NotFoundException{
+		return new CountryStatsDto(service.getCountry(DateUtils.convert(epochDays), country));
 	}
 	
 }
