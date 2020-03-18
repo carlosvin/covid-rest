@@ -1,4 +1,4 @@
-package com.carlosvin.covid.services;
+package com.carlosvin.covid.services.excel;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -20,6 +20,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import com.carlosvin.covid.models.DateCountryStats;
+import com.carlosvin.covid.services.DataSource;
 
 @Service
 @PropertySource("classpath:application.properties")

@@ -1,4 +1,4 @@
-package com.carlosvin.covid.services;
+package com.carlosvin.covid.services.excel;
 
 import java.time.ZonedDateTime;
 
@@ -7,6 +7,7 @@ import org.apache.poi.ss.usermodel.Row;
 import com.carlosvin.covid.models.Country;
 import com.carlosvin.covid.models.DateCountryStats;
 import com.carlosvin.covid.models.DateStats;
+import com.carlosvin.covid.services.DateUtils;
 
 enum Cells {
 	Date(0), Cases(4), NewDeaths(5), Country(6), CountryCode(7);
