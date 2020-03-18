@@ -35,8 +35,8 @@ public class DataSourceExcel implements DataSource {
 		this.clock = clock;
 	}
 
-	private URL getUrl() {
-		String urlStr = String.format(baseUrl + DF.format(LocalDate.now(clock)) + ".xlsx");
+	private URL getUrl(int daysToSubtract) {
+		String urlStr = String.format(baseUrl + DF.format(LocalDate.now(clock).minusDays(daysToSubtract)) + ".xlsx");
 		try {
 			return new URL(urlStr);
 		} catch (MalformedURLException e) {
@@ -46,7 +46,12 @@ public class DataSourceExcel implements DataSource {
 
 	@Override
 	public Stream<DateCountryStats> fetchData() throws IOException {
-		try (Workbook wb = WorkbookFactory.create(new BufferedInputStream(getUrl().openStream()))) {
+		return fetchData(0);
+	}
+	
+	@Override
+	public Stream<DateCountryStats> fetchData(int daysToSubtract) throws IOException {
+		try (Workbook wb = WorkbookFactory.create(new BufferedInputStream(getUrl(daysToSubtract).openStream()))) {
 			Sheet sheet = wb.getSheetAt(0);
 			sheet.removeRow(sheet.getRow(0));
 			return StreamSupport.stream(sheet.spliterator(), false).map(r -> new CovidDataEntryExcel(r));

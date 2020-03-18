@@ -12,37 +12,32 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.carlosvin.covid.models.CountryStats;
+import com.carlosvin.covid.models.DateCountryStats;
 import com.carlosvin.covid.models.DateStats;
 import com.carlosvin.covid.repositories.CovidDataRepository;
 import com.carlosvin.covid.services.exceptions.NotFoundException;
 
 @Service
 public class CovidEntriesServiceImpl implements CovidEntriesService {
-	
+
 	private long lastSaved;
 
 	private final CovidDataRepository repo;
 	private final DataSource source;
 	private static final Logger LOG = LoggerFactory.getLogger(CovidEntriesServiceImpl.class);
-	
+
 	@Autowired
 	public CovidEntriesServiceImpl(CovidDataRepository repo, DataSource source) {
 		this.repo = repo;
 		this.source = source;
 		this.lastSaved = 0;
-		this.load();
+		this.firstLoad();
 	}
-	
+
 	@Scheduled(fixedDelayString = "${fixedDelay.ms:3600000}", initialDelayString = "${fixedDelay.ms:3600000}")
 	private void scheduledLoad() {
-		this.load();
-	}
-	
-	private void load() {
 		try {
-			repo.init(source.fetchData());
-			lastSaved = System.currentTimeMillis();
-			LOG.info("Data fetched and loaded into the repository");
+			this.load(source.fetchData());
 		} catch (IOException e) {
 			String msg = "Problem refreshing repository information";
 			LOG.warn(msg, e);
@@ -50,6 +45,25 @@ public class CovidEntriesServiceImpl implements CovidEntriesService {
 				LOG.warn(e.getMessage());
 			}
 		}
+	}
+
+	private void firstLoad() {
+		try {
+			this.load(source.fetchData());
+		} catch (IOException e) {
+			try {
+				LOG.info("Today's data is not yet available, loading yesterday's: ", e.getMessage());
+				this.load(source.fetchData(1));
+			} catch (IOException e1) {
+				LOG.warn(e.getMessage());
+			}
+		}
+	}
+
+	private void load(Stream<DateCountryStats> data) throws IOException {
+		repo.init(data);
+		lastSaved = System.currentTimeMillis();
+		LOG.info("Data fetched and loaded into the repository");
 	}
 
 	@Override

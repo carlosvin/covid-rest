@@ -7,4 +7,6 @@ import com.carlosvin.covid.models.DateCountryStats;
 
 public interface DataSource {
 	Stream<DateCountryStats> fetchData () throws IOException;
+
+	Stream<DateCountryStats> fetchData(int deltaDays) throws IOException;
 }
