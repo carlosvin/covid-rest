@@ -1,6 +1,7 @@
 package com.carlosvin.covid;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.comparesEqualTo;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -10,13 +11,13 @@ import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -25,19 +26,19 @@ import org.springframework.test.web.servlet.MockMvc;
 @TestPropertySource(properties = { "base.url=data-" })
 class DatesControllerTest {
 	
-	@MockBean
-    private Clock clockMock;
+	@TestConfiguration
+    public static class TestConfig {
+
+        @Bean
+        @Primary
+        public Clock mockClock() {
+        	return Clock.fixed(Instant.parse("2020-03-17T10:10:30Z"), ZoneId.of("UTC"));
+        }
+
+    }
 
 	@Autowired
 	private MockMvc mockMvc;
-	
-	@BeforeEach
-	void setUp () {
-		Clock clock = Clock.fixed(Instant.parse("2020-03-17T10:10:30Z"), ZoneId.of("UTC"));
-		Mockito.when(clockMock.getZone()).thenReturn(clock.getZone());
-	    Mockito.when(clockMock.instant()).thenReturn(clock.instant());
-	    Mockito.when(clockMock.millis()).thenReturn(clock.millis());
-	}
 	
 	@Test
 	void getDates() throws Exception {
