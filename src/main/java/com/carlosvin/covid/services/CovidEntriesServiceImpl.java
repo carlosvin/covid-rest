@@ -58,7 +58,11 @@ public class CovidEntriesServiceImpl implements CovidEntriesService {
 	}
 
 	@Override
-	public CountryStats getCountry(String countryCode) {
+	public CountryStats getCountry(String countryCode) throws NotFoundException {
+		CountryStats c = repo.getAggregateStats(countryCode);
+		if (c == null) {
+			throw new NotFoundException("Country not found " + countryCode);
+		}
 		return repo.getAggregateStats(countryCode);
 	}
 
