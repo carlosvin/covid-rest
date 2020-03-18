@@ -47,7 +47,7 @@ public class CovidEntriesServiceImpl implements CovidEntriesService {
 			String msg = "Problem refreshing repository information";
 			LOG.warn(msg, e);
 			if (lastSaved == 0) {
-				LOG.error("Problem refreshing repository information ", e);
+				LOG.warn(e.getMessage());
 			}
 		}
 	}
