@@ -1,0 +1,22 @@
+= REST API to get COVID statistics
+Carlos Martin Sanchez <carlosvin@gmail.com> ${project.version};
+:doctype: book
+:icons: font
+:source-highlighter: prettify
+:toc: left
+:toclevels: 4
+:sectlinks:
+:sectnums:
+
+[[overview]]
+== Overview
+Exposes COVID-19 statistics extracted from daily published data by European Centre for Disease Prevention and Control at: https://www.ecdc.europa.eu/en/publications-data/download-todays-data-geographic-distribution-covid-19-cases-worldwide
+
+== Endpoints
+=== Countries
+
+==== Sample request
+include::{snippets}/countries/http-request.adoc[]
+
+==== Sample Response
+include::{snippets}/countries/http-response.adoc[]

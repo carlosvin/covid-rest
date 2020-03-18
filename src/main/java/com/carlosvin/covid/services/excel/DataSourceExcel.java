@@ -68,17 +68,6 @@ public class DataSourceExcel implements DataSource {
 				}
 			}
 			return l.stream();
-			/*return StreamSupport
-					.stream(wb.getSheetAt(0).spliterator(), false)
-					.skip(1)
-					.map(r -> {
-						try {
-							return (DateCountryStats)new CovidDataEntryExcel(r);
-						} catch (Exception e) {
-							return null;
-						}
-					} )
-					.filter(c -> c != null);*/
 		}
 	}
 
