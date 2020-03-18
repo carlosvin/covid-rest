@@ -33,7 +33,7 @@ public interface CovidDataRepository {
 	/**
 	 * @return All statistics by country on that date
 	 * */
-	Iterable<CountryStats> getStats(ZonedDateTime date);
+	Stream<CountryStats> getStats(ZonedDateTime date);
 	
 	/**
 	 * @return All date statistics for a country

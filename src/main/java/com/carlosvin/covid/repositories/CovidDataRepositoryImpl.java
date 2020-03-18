@@ -45,7 +45,7 @@ public class CovidDataRepositoryImpl implements CovidDataRepository {
 	}
 
 	@Override
-	public Iterable<CountryStats> getStats(ZonedDateTime date) {
+	public Stream<CountryStats> getStats(ZonedDateTime date) {
 		return dates.getCountries(date);
 	}
 

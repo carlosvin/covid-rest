@@ -52,4 +52,29 @@ class DatesControllerTest {
             .andExpect(jsonPath("$.18336.epochDays", comparesEqualTo(18336)));
 	}
 	
+	@Test
+	void getDate() throws Exception {
+		this.mockMvc
+			.perform(get("/dates/18336"))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.confirmedCases", comparesEqualTo(16051)))
+            .andExpect(jsonPath("$.deathsNumber",comparesEqualTo(746)))
+            .andExpect(jsonPath("$.date", comparesEqualTo("2020-03-15T00:00:00Z")))
+            .andExpect(jsonPath("$.epochDays", comparesEqualTo(18336)));
+	}
+	
+	@Test
+	void getCoutryStatsInADate() throws Exception {
+		this.mockMvc
+			.perform(get("/dates/18336/countries"))
+			.andDo(print())
+			.andExpect(status().isOk())
+            .andExpect(jsonPath("$.*", hasSize(128)))
+			.andExpect(jsonPath("$.ES.confirmedCases", comparesEqualTo(2000)))
+            .andExpect(jsonPath("$.ES.deathsNumber",comparesEqualTo(152)))
+            .andExpect(jsonPath("$.ES.countryName", comparesEqualTo("Spain")));
+	}
+	
+	
 }

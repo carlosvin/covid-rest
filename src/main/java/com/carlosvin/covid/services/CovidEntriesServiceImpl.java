@@ -88,4 +88,20 @@ public class CovidEntriesServiceImpl implements CovidEntriesService {
 		load();
 		return repo.getDates();
 	}
+
+	@Override
+	public DateStats getDate(ZonedDateTime date) throws NotFoundException {
+		load();
+		DateStats stats = repo.getAggregateStats(date);
+		if (stats == null) {
+			throw new NotFoundException("There are no stats on " + date);
+		}
+		return stats;
+	}
+
+	@Override
+	public Stream<? extends CountryStats> getCountries(ZonedDateTime date) throws NotFoundException {
+		load();
+		return repo.getStats(date);
+	}
 }

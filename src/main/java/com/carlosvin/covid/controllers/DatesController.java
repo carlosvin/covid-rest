@@ -5,11 +5,13 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.carlosvin.covid.controllers.dtos.CountryStatsDto;
 import com.carlosvin.covid.controllers.dtos.DateStatsDto;
 import com.carlosvin.covid.services.CovidEntriesService;
+import com.carlosvin.covid.services.DateUtils;
 import com.carlosvin.covid.services.exceptions.NotFoundException;
 
 @RestController
@@ -27,6 +29,21 @@ public class DatesController {
 		return service.getDates()
 				.map(d -> new DateStatsDto(d))
 				.collect(Collectors.toMap(d -> ((DateStatsDto)d).epochDays, d -> (DateStatsDto)d));
+	}
+	
+	@GetMapping("/dates/{epochDays}")
+	public DateStatsDto getDate(@PathVariable long epochDays) throws NotFoundException{
+		return new DateStatsDto(service.getDate(DateUtils.convert(epochDays)));
+	}
+	
+
+	@GetMapping("/dates/{epochDays}/countries")
+	public Map<String, CountryStatsDto> getCountries(@PathVariable long epochDays) throws NotFoundException{
+		return service
+				.getCountries(DateUtils.convert(epochDays))
+				.map(c -> new CountryStatsDto(c))
+				.collect(Collectors.toMap(c -> ((CountryStatsDto)c).countryCode, c -> (CountryStatsDto)c));
+
 	}
 	
 }

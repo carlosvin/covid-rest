@@ -1,7 +1,6 @@
 package com.carlosvin.covid.repositories;
 
 import java.time.ZonedDateTime;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -43,12 +42,12 @@ public class DateRepo implements Stats {
 		return dates.get(date);
 	}
 
-	public Iterable<CountryStats> getCountries(ZonedDateTime date) {
+	public Stream<CountryStats> getCountries(ZonedDateTime date) {
 		DateModel d = dates.get(date);
 		if (d != null) {
 			return d.getCountries();
 		}
-		return Collections.emptyList();
+		return Stream.empty();
 	}
 
 	public Stream<? extends DateStats> get() {

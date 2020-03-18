@@ -3,6 +3,7 @@ package com.carlosvin.covid.repositories;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import com.carlosvin.covid.models.Country;
 import com.carlosvin.covid.models.CountryStats;
@@ -61,7 +62,7 @@ class DateModel implements DateStats {
 		return date;
 	}
 
-	public Iterable<CountryStats> getCountries() {
-		return countriesRepo.values();
+	public Stream<CountryStats> getCountries() {
+		return countriesRepo.values().stream();
 	}
 }
