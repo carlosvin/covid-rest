@@ -8,6 +8,8 @@
 :sectlinks:
 :sectnums:
 
+// TODO switch back to https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_daily_reports
+
 [[overview]]
 == Overview
 Exposes COVID-19 statistics extracted from daily published data by European Centre for Disease Prevention and Control at: https://www.ecdc.europa.eu/en/publications-data/download-todays-data-geographic-distribution-covid-19-cases-worldwide

@@ -23,7 +23,7 @@ import com.carlosvin.covid.models.DateCountryStats;
 import com.carlosvin.covid.services.DataSource;
 import com.monitorjbl.xlsx.StreamingReader;
 
-@Service
+//@Service
 @PropertySource("classpath:application.properties")
 public class DataSourceExcel implements DataSource {
 	private static final Logger LOG = LoggerFactory.getLogger(DataSourceExcel.class);
@@ -32,13 +32,14 @@ public class DataSourceExcel implements DataSource {
 	private final Clock clock;
 	
 	@Autowired
-	public DataSourceExcel(@Value("${base.url}") String baseUrl, Clock clock) {
+	public DataSourceExcel(@Value("${base.url.excel}") String baseUrl, Clock clock) {
 		this.baseUrl = baseUrl;
 		this.clock = clock;
 	}
 
-	private URL getUrl(int daysToSubtract) {
-		String urlStr = String.format(baseUrl + DF.format(LocalDate.now(clock).minusDays(daysToSubtract)) + ".xlsx");
+	@Override
+	public URL getUrl(int daysToSubtract) {
+		String urlStr = String.format(baseUrl + DF.format(LocalDate.now(clock).minusDays(daysToSubtract)) + ".xls");
 		try {
 			return new URL(urlStr);
 		} catch (MalformedURLException e) {
@@ -53,11 +54,12 @@ public class DataSourceExcel implements DataSource {
 	
 	@Override
 	public Stream<DateCountryStats> fetchData(int daysToSubtract) throws IOException {
-		
+		URL url = getUrl(daysToSubtract);
+		LOG.info("Fetching Excel file: {}", url);
 		try (Workbook wb = StreamingReader.builder()
 		        .rowCacheSize(100)    // number of rows to keep in memory (defaults to 10)
 		        .bufferSize(4096)     // buffer size to use when reading InputStream to file (defaults to 1024)
-		        .open(getUrl(daysToSubtract).openStream())) {
+		        .open(url.openStream())) {
 			List<DateCountryStats> l = new LinkedList<DateCountryStats>();
 
 			for (Row r: wb.getSheetAt(0)) {
