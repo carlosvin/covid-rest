@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Service;
 
 import com.carlosvin.covid.models.DateCountryStats;
 import com.carlosvin.covid.services.DataSource;
@@ -24,7 +23,7 @@ import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.HeaderColumnNameMappingStrategy;
 
-@Service
+//@Service
 @PropertySource("classpath:application.properties")
 public class DataSourceCsv implements DataSource {
 	private static final Logger LOG = LoggerFactory.getLogger(DataSourceCsv.class);
@@ -39,7 +38,6 @@ public class DataSourceCsv implements DataSource {
 		this.clock = clock;
 	}
 	
-	@Override
 	public URL getUrl(int daysToSubtract) {
 		date = LocalDate.now();
 		String urlStr = String.format(baseUrl + DF.format(LocalDate.now(clock).minusDays(daysToSubtract)) + ".csv");
