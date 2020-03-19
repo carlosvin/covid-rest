@@ -2,7 +2,7 @@
 {author-name} <{author-email}> {project-version};
 :doctype: book
 :icons: font
-:source-highlighter: prettify
+:source-highlighter: highlightjs
 :toc: left
 :toclevels: 4
 :sectlinks:
@@ -14,36 +14,31 @@
 == Overview
 Exposes COVID-19 statistics extracted from daily published data by European Centre for Disease Prevention and Control at: https://www.ecdc.europa.eu/en/publications-data/download-todays-data-geographic-distribution-covid-19-cases-worldwide
 
-== Endpoints
-=== Countries stats list
+== Countries
+=== List of country statistics
+
+include::{snippets}/countries/list/http-response.adoc[]
+
+=== Statistics for a country
 
 ==== Sample request
-include::{snippets}/countries/http-request.adoc[]
+include::{snippets}/countries/country/http-request.adoc[]
 
 ==== Sample Response
-include::{snippets}/countries/http-response.adoc[opts=wrap]
+include::{snippets}/countries/country/http-response.adoc[]
 
-=== Country statistics
+=== List of date statistics for a country
 
 ==== Sample request
-include::{snippets}/country/http-request.adoc[]
+include::{snippets}/countries/country-dates/http-request.adoc[]
 
 ==== Sample Response
-include::{snippets}/country/http-response.adoc[]
+include::{snippets}/countries/country-dates/http-response.adoc[]
 
-=== List dates in a country
+=== Statistics in a country in a date
 
 ==== Sample request
-include::{snippets}/country-dates/http-request.adoc[]
+include::{snippets}/countries/country-date/http-request.adoc[]
 
 ==== Sample Response
-include::{snippets}/country-dates/http-response.adoc[]
-
-
-=== Statistics for a date in a country
-
-==== Sample request
-include::{snippets}/country-date/http-request.adoc[]
-
-==== Sample Response
-include::{snippets}/country-date/http-response.adoc[]
+include::{snippets}/countries/country-date/http-response.adoc[]

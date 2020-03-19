@@ -80,7 +80,7 @@ class DatesControllerTest {
 	@Test
 	void getCountry() throws Exception {
 		this.mockMvc
-			.perform(get("/dates/18334/countries/ES"))
+			.perform(get("/dates/18334/countries/eS"))
 			.andDo(print())
 			.andExpect(status().isOk())
             .andExpect(jsonPath("$.confirmedCases", comparesEqualTo(1227)))

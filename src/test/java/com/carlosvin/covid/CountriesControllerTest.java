@@ -53,7 +53,7 @@ class CountriesControllerTest {
 	@Test
 	void getCountries() throws Exception {
 		this.mockMvc.perform(get("/countries"))
-			.andDo(document("countries", preprocessResponse(prettyPrint())))
+			.andDo(document("countries/list", preprocessResponse(prettyPrint())))
 			.andDo(print()).andExpect(status().isOk())
 				.andExpect(jsonPath("$").isArray()).andExpect(jsonPath("$", hasSize(145)))
 				.andExpect(jsonPath("$[0].confirmedCases", greaterThan(0)))
@@ -65,7 +65,7 @@ class CountriesControllerTest {
 
 	@Test
 	void getACountry() throws Exception {
-		this.mockMvc.perform(get("/countries/ES")).andDo(document("country")).andDo(print()).andExpect(status().isOk())
+		this.mockMvc.perform(get("/countries/ES")).andDo(document("countries/country")).andDo(print()).andExpect(status().isOk())
 				.andExpect(jsonPath("$.confirmedCases", comparesEqualTo(9191)))
 				.andExpect(jsonPath("$.deathsNumber", comparesEqualTo(309)))
 				.andExpect(jsonPath("$.countryCode", comparesEqualTo("ES")))
@@ -74,7 +74,7 @@ class CountriesControllerTest {
 
 	@Test
 	void getDates() throws Exception {
-		this.mockMvc.perform(get("/countries/ES/dates")).andDo(print()).andDo(document("country-dates"))
+		this.mockMvc.perform(get("/countries/ES/dates")).andDo(print()).andDo(document("countries/country-dates"))
 				.andExpect(status().isOk()).andExpect(jsonPath("$.*", hasSize(78)))
 				.andExpect(jsonPath("$.18334.confirmedCases", comparesEqualTo(1227)))
 				.andExpect(jsonPath("$.18334.deathsNumber", comparesEqualTo(37)))
@@ -85,7 +85,7 @@ class CountriesControllerTest {
 
 	@Test
 	void getDate() throws Exception {
-		this.mockMvc.perform(get("/countries/ES/dates/18334")).andDo(document("country-date")).andDo(print())
+		this.mockMvc.perform(get("/countries/Es/dates/18334")).andDo(document("countries/country-date")).andDo(print())
 				.andExpect(status().isOk()).andExpect(jsonPath("$.confirmedCases", comparesEqualTo(1227)))
 				.andExpect(jsonPath("$.deathsNumber", comparesEqualTo(37)))
 				.andExpect(jsonPath("$.date", comparesEqualTo("2020-03-13T00:00:00Z")))
