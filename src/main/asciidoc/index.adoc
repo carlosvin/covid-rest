@@ -1,5 +1,8 @@
 = REST API to get COVID statistics
-{author-name} <{author-email}> {project-version};
+:author: {author-name}
+:email: {author-email}
+:revnumber: {project-version}
+:repository: https://github.com/carlosvin/covid-rest
 :doctype: book
 :icons: font
 :source-highlighter: highlightjs
@@ -7,8 +10,7 @@
 :toclevels: 4
 :sectlinks:
 :sectnums:
-
-// TODO switch back to https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_daily_reports
+:backend: html5
 
 [[overview]]
 == Overview
@@ -17,28 +19,62 @@ Exposes COVID-19 statistics extracted from daily published data by European Cent
 == Countries
 === List of country statistics
 
-include::{snippets}/countries/list/http-response.adoc[]
+.Sample request
+include::{snippets}/countries/list/http-request.adoc[leveloffset+=1]
+
+.Sample response
+include::{snippets}/countries/list/http-response.adoc[leveloffset+=1]
 
 === Statistics for a country
 
-==== Sample request
+.Sample request
 include::{snippets}/countries/country/http-request.adoc[]
 
-==== Sample Response
+.Sample Response
 include::{snippets}/countries/country/http-response.adoc[]
 
 === List of date statistics for a country
 
-==== Sample request
+.Sample request
 include::{snippets}/countries/country-dates/http-request.adoc[]
 
-==== Sample Response
+.Sample Response
 include::{snippets}/countries/country-dates/http-response.adoc[]
 
 === Statistics in a country in a date
 
-==== Sample request
+.Sample request
 include::{snippets}/countries/country-date/http-request.adoc[]
 
-==== Sample Response
+.Sample Response
 include::{snippets}/countries/country-date/http-response.adoc[]
+
+== Dates
+=== List of date statistics
+
+.Sample Response
+include::{snippets}/dates/list/http-response.adoc[]
+
+=== Statistics in a date
+
+.Sample request
+include::{snippets}/dates/date/http-request.adoc[]
+
+.Sample Response
+include::{snippets}/dates/date/http-response.adoc[]
+
+=== List of country statistics for a date
+
+.Sample request
+include::{snippets}/dates/date-countries/http-request.adoc[]
+
+.Sample Response
+include::{snippets}/dates/date-countries/http-response.adoc[]
+
+=== Statistics in a date in a country
+
+.Sample request
+include::{snippets}/dates/date-country/http-request.adoc[]
+
+.Sample Response
+include::{snippets}/dates/date-country/http-response.adoc[]

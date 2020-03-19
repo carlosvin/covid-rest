@@ -2,6 +2,9 @@ package com.carlosvin.covid;
 
 import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -13,6 +16,7 @@ import java.time.ZoneId;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -24,6 +28,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource(properties = { "base.url=data-" })
+@AutoConfigureRestDocs(uriHost = "covid-rest.appspot.com", uriScheme = "https")
 class DatesControllerTest {
 	
 	@TestConfiguration
@@ -44,6 +49,7 @@ class DatesControllerTest {
 	void getDates() throws Exception {
 		this.mockMvc
 			.perform(get("/dates"))
+			.andDo(document("dates/list", preprocessResponse(prettyPrint())))
 			.andDo(print())
 			.andExpect(status().isOk())
             .andExpect(jsonPath("$.*", hasSize(78)))
@@ -57,6 +63,7 @@ class DatesControllerTest {
 	void getDate() throws Exception {
 		this.mockMvc
 			.perform(get("/dates/18336"))
+			.andDo(document("dates/date", preprocessResponse(prettyPrint())))
 			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.confirmedCases", comparesEqualTo(16051)))
@@ -69,6 +76,7 @@ class DatesControllerTest {
 	void getCoutryStatsInADate() throws Exception {
 		this.mockMvc
 			.perform(get("/dates/18336/countries"))
+			.andDo(document("dates/date-countries", preprocessResponse(prettyPrint())))
 			.andDo(print())
 			.andExpect(status().isOk())
             .andExpect(jsonPath("$.*", hasSize(128)))
@@ -81,6 +89,7 @@ class DatesControllerTest {
 	void getCountry() throws Exception {
 		this.mockMvc
 			.perform(get("/dates/18334/countries/eS"))
+			.andDo(document("dates/date-country", preprocessResponse(prettyPrint())))
 			.andDo(print())
 			.andExpect(status().isOk())
             .andExpect(jsonPath("$.confirmedCases", comparesEqualTo(1227)))

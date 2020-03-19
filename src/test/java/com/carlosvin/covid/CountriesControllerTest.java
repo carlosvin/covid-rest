@@ -24,14 +24,14 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+//import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource(properties = { "base.url=data-" })
-@AutoConfigureRestDocs
+@AutoConfigureRestDocs(uriHost = "covid-rest.appspot.com", uriScheme = "https")
 class CountriesControllerTest {
 
 	@TestConfiguration
