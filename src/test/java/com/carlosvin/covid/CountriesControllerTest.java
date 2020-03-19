@@ -52,10 +52,9 @@ class CountriesControllerTest {
 
 	@Test
 	void getCountries() throws Exception {
-		// TODO create test with smaller file for documentation
-		// TODO improve documentation following
-		// https://www.javadevjournal.com/spring-boot/spring-rest-docs/#32-Generating-The-Documentation
-		this.mockMvc.perform(get("/countries")).andDo(document("countries", preprocessResponse(prettyPrint()))).andDo(print()).andExpect(status().isOk())
+		this.mockMvc.perform(get("/countries"))
+			.andDo(document("countries", preprocessResponse(prettyPrint())))
+			.andDo(print()).andExpect(status().isOk())
 				.andExpect(jsonPath("$").isArray()).andExpect(jsonPath("$", hasSize(145)))
 				.andExpect(jsonPath("$[0].confirmedCases", greaterThan(0)))
 				.andExpect(jsonPath("$[0].deathsNumber", comparesEqualTo(0)))
