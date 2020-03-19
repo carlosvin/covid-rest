@@ -3,6 +3,7 @@ package com.carlosvin.covid;
 import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -20,12 +21,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
-import org.springframework.http.MediaType;
-import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -46,15 +47,17 @@ class CountriesControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
+	
+	
 
 	@Test
 	void getCountries() throws Exception {
+		// TODO create test with smaller file for documentation
 		// TODO improve documentation following
 		// https://www.javadevjournal.com/spring-boot/spring-rest-docs/#32-Generating-The-Documentation
-		this.mockMvc.perform(get("/countries"))
-				.andDo(document("countries"))
-				.andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$").isArray())
-				.andExpect(jsonPath("$", hasSize(145))).andExpect(jsonPath("$[0].confirmedCases", greaterThan(0)))
+		this.mockMvc.perform(get("/countries")).andDo(document("countries", preprocessResponse(prettyPrint()))).andDo(print()).andExpect(status().isOk())
+				.andExpect(jsonPath("$").isArray()).andExpect(jsonPath("$", hasSize(145)))
+				.andExpect(jsonPath("$[0].confirmedCases", greaterThan(0)))
 				.andExpect(jsonPath("$[0].deathsNumber", comparesEqualTo(0)))
 				.andExpect(jsonPath("$[0].countryCode", comparesEqualTo("PS")))
 				.andExpect(jsonPath("$[0].countryName", comparesEqualTo("Palestine")))
