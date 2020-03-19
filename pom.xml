@@ -22,7 +22,8 @@
 	</developers>
 
 	<properties>
-		<java.version>11</java.version>
+		<maven.compiler.source>11</maven.compiler.source>
+   		<maven.compiler.target>11</maven.compiler.target>
 		<appengine.maven.plugin>2.2.0</appengine.maven.plugin>
 		<app.deploy.projectId>${project.artifactId}</app.deploy.projectId>
 		<app.deploy.version>1</app.deploy.version>
