@@ -1,2 +1,4 @@
-# covid-rest
-REST API for querying COVID19 data from https://github.com/CSSEGISandData/COVID-19
+# COVID REST API
+REST API for querying COVID19 data. 
+
+Please check documentation at http://covid-rest.appspot.com/docs/index.html.
