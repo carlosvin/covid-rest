@@ -15,15 +15,19 @@ import com.carlosvin.covid.services.exceptions.NotFoundException;
 @ControllerAdvice
 public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<String> notFound(NotFoundException ex, WebRequest request) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
-    }
-    
-    @ExceptionHandler({InvalidInputParamsException.class, ValidationException.class})
-    public ResponseEntity<String> invalidInput(Exception ex, WebRequest request) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-    }
+	@ExceptionHandler(NotFoundException.class)
+	public ResponseEntity<String> notFound(NotFoundException ex, WebRequest request) {
+		return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+	}
 
+	@ExceptionHandler({ InvalidInputParamsException.class })
+	public ResponseEntity<String> invalidInput(InvalidInputParamsException ex, WebRequest request) {
+		return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler({ ValidationException.class })
+	public ResponseEntity<String> validationException(ValidationException ex, WebRequest request) {
+		return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+	}
 
 }

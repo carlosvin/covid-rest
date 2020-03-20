@@ -73,6 +73,19 @@ class DatesControllerTest {
 	}
 	
 	@Test
+	void getDateIso() throws Exception {
+		this.mockMvc
+			.perform(get("/dates/2020-03-15"))
+			.andDo(document("dates/date-iso", preprocessResponse(prettyPrint())))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.confirmedCases", comparesEqualTo(16051)))
+            .andExpect(jsonPath("$.deathsNumber",comparesEqualTo(746)))
+            .andExpect(jsonPath("$.date", comparesEqualTo("2020-03-15T00:00:00Z")))
+            .andExpect(jsonPath("$.epochDays", comparesEqualTo(18336)));
+	}
+	
+	@Test
 	void getCoutryStatsInADate() throws Exception {
 		this.mockMvc
 			.perform(get("/dates/18336/countries"))
