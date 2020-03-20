@@ -52,43 +52,31 @@ class DatesControllerTest {
 			.andDo(print())
 			.andExpect(status().isOk())
             .andExpect(jsonPath("$.*", hasSize(78)))
-			.andExpect(jsonPath("$.18336.confirmedCases", comparesEqualTo(16051)))
-            .andExpect(jsonPath("$.18336.deathsNumber",comparesEqualTo(746)))
-            .andExpect(jsonPath("$.18336.date", comparesEqualTo("2020-03-15T00:00:00Z")))
-            .andExpect(jsonPath("$.18336.epochDays", comparesEqualTo(18336)))
+			.andExpect(jsonPath("$.2020-03-15.confirmedCases", comparesEqualTo(16051)))
+            .andExpect(jsonPath("$.2020-03-15.deathsNumber",comparesEqualTo(746)))
+            .andExpect(jsonPath("$.2020-03-15.dateTime", comparesEqualTo("2020-03-15T00:00:00Z")))
+            .andExpect(jsonPath("$.2020-03-15.date", comparesEqualTo("2020-03-15")))
+            .andExpect(jsonPath("$.2020-03-15.path", comparesEqualTo("/dates/2020-03-15")))
 			.andDo(document("dates/list", preprocessResponse(prettyPrint(), new CropPreprocessor())));
 	}
 	
 	@Test
 	void getDate() throws Exception {
 		this.mockMvc
-			.perform(get("/dates/18336"))
+			.perform(get("/dates/2020-03-15"))
 			.andDo(document("dates/date", preprocessResponse(prettyPrint())))
 			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.confirmedCases", comparesEqualTo(16051)))
             .andExpect(jsonPath("$.deathsNumber",comparesEqualTo(746)))
-            .andExpect(jsonPath("$.date", comparesEqualTo("2020-03-15T00:00:00Z")))
-            .andExpect(jsonPath("$.epochDays", comparesEqualTo(18336)));
-	}
-	
-	@Test
-	void getDateIso() throws Exception {
-		this.mockMvc
-			.perform(get("/dates/2020-03-15"))
-			.andDo(document("dates/date-iso", preprocessResponse(prettyPrint())))
-			.andDo(print())
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.confirmedCases", comparesEqualTo(16051)))
-            .andExpect(jsonPath("$.deathsNumber",comparesEqualTo(746)))
-            .andExpect(jsonPath("$.date", comparesEqualTo("2020-03-15T00:00:00Z")))
-            .andExpect(jsonPath("$.epochDays", comparesEqualTo(18336)));
+            .andExpect(jsonPath("$.dateTime", comparesEqualTo("2020-03-15T00:00:00Z")))
+            .andExpect(jsonPath("$.date", comparesEqualTo("2020-03-15")));
 	}
 	
 	@Test
 	void getCoutryStatsInADate() throws Exception {
 		this.mockMvc
-			.perform(get("/dates/18336/countries"))
+			.perform(get("/dates/2020-03-15/countries"))
 			.andDo(print())
 			.andExpect(status().isOk())
             .andExpect(jsonPath("$.*", hasSize(128)))
@@ -101,7 +89,7 @@ class DatesControllerTest {
 	@Test
 	void getCountry() throws Exception {
 		this.mockMvc
-			.perform(get("/dates/18334/countries/eS"))
+			.perform(get("/dates/2020-03-13/countries/eS"))
 			.andDo(document("dates/date-country", preprocessResponse(prettyPrint())))
 			.andDo(print())
 			.andExpect(status().isOk())

@@ -41,10 +41,10 @@ public class CountriesController {
 	}
 
 	@GetMapping("/countries/{country}/dates")
-	public Map<Long, DateStatsDto> getDatesByCountry(HttpServletRequest request,
+	public Map<String, DateStatsDto> getDatesByCountry(HttpServletRequest request,
 			@Size(min = 2, max = 2) @PathVariable String country) throws NotFoundException {
 		return service.getDatesByCountry(country).map(d -> new DateStatsDto.WithUrl(d, request.getRequestURI()))
-				.collect(Collectors.toMap(d -> ((DateStatsDto) d).epochDays, d -> (DateStatsDto) d));
+				.collect(Collectors.toMap(d -> ((DateStatsDto) d).date, d -> (DateStatsDto) d));
 	}
 
 	@GetMapping("/countries/{country}/dates/{isoDateStr}")

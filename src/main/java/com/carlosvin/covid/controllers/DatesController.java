@@ -32,7 +32,7 @@ public class DatesController {
 	@GetMapping("/dates")
 	public Map<String, DateStatsDto> getDates(HttpServletRequest request) throws NotFoundException {
 		return service.getDates().map(d -> new DateStatsDto.WithUrl(d, request.getRequestURI()))
-				.collect(Collectors.toMap(d -> ((DateStatsDto) d).isoDateStr, d -> (DateStatsDto) d));
+				.collect(Collectors.toMap(d -> ((DateStatsDto) d).date, d -> (DateStatsDto) d));
 	}
 
 	@GetMapping("/dates/{isoDateStr}")

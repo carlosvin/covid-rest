@@ -7,15 +7,13 @@ import com.carlosvin.covid.services.DateUtils;
 
 public class DateStatsDto extends StatsDto {
 	
-	public final ZonedDateTime date;
-	public final long epochDays;
-	public final String isoDateStr;
+	public final ZonedDateTime dateTime;
+	public final String date;
 
 	public DateStatsDto (DateStats stats) {
 		super(stats);
-		date = stats.getDate();
-		epochDays = date.toLocalDate().toEpochDay();
-		isoDateStr = DateUtils.toIsoStr(date);
+		dateTime = stats.getDate();
+		date = DateUtils.toIsoStr(dateTime);
 	}
 	
 	public static class WithUrl extends DateStatsDto {
@@ -23,7 +21,7 @@ public class DateStatsDto extends StatsDto {
 
 		public WithUrl (DateStats stats, String basePath) {
 			super(stats);
-			path = basePath + "/" +  isoDateStr;
+			path = basePath + "/" +  date;
 		}
 	}
 }
