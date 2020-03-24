@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.carlosvin.covid.controllers.dtos.CountryStatsDto;
@@ -21,6 +22,7 @@ import com.carlosvin.covid.services.exceptions.NotFoundException;
 
 @Validated
 @RestController
+@RequestMapping("/countries")
 public class CountriesController {
 
 	private final CovidEntriesService service;
@@ -30,24 +32,24 @@ public class CountriesController {
 		this.service = service;
 	}
 
-	@GetMapping("/countries")
+	@GetMapping("")
 	public Stream<CountryStatsDto> getCountries() throws NotFoundException {
 		return this.service.getCountries().map(c -> new CountryStatsDto(c));
 	}
 
-	@GetMapping("/countries/{country}")
+	@GetMapping("/{country}")
 	public CountryStatsDto getCountry(@Size(min = 2, max = 2) @PathVariable String country) throws NotFoundException {
 		return new CountryStatsDto(service.getCountry(country));
 	}
 
-	@GetMapping("/countries/{country}/dates")
+	@GetMapping("/{country}/dates")
 	public Map<String, DateStatsDto> getDatesByCountry(HttpServletRequest request,
 			@Size(min = 2, max = 2) @PathVariable String country) throws NotFoundException {
 		return service.getDatesByCountry(country).map(d -> new DateStatsDto.WithUrl(d, request.getRequestURI()))
 				.collect(Collectors.toMap(d -> ((DateStatsDto) d).date, d -> (DateStatsDto) d));
 	}
 
-	@GetMapping("/countries/{country}/dates/{isoDateStr}")
+	@GetMapping("/{country}/dates/{isoDateStr}")
 	public DateStatsDto getDateByCountry(@Size(min = 2, max = 2) @PathVariable String country,
 			@Size(min = 10, max = 20) @PathVariable String isoDateStr) throws NotFoundException {
 		return new DateStatsDto(service.getDate(country, DateUtils.convert(isoDateStr)));
