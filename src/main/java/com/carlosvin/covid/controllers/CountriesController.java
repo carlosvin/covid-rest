@@ -2,7 +2,6 @@ package com.carlosvin.covid.controllers;
 
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Size;
@@ -33,8 +32,11 @@ public class CountriesController {
 	}
 
 	@GetMapping("")
-	public Stream<CountryStatsDto> getCountries() throws NotFoundException {
-		return this.service.getCountries().map(c -> new CountryStatsDto(c));
+	public Map<String, CountryStatsDto> getCountries() throws NotFoundException {
+		return this.service.getCountries()
+				.map(c -> new CountryStatsDto(c))
+				.collect(Collectors.toMap(
+						c -> c.countryCode, c -> c ));
 	}
 
 	@GetMapping("/{country}")

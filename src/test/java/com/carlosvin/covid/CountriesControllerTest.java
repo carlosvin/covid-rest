@@ -1,7 +1,6 @@
 package com.carlosvin.covid;
 
 import static org.hamcrest.Matchers.comparesEqualTo;
-import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 //import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
@@ -50,12 +49,12 @@ class CountriesControllerTest {
 	@Test
 	void getCountries() throws Exception {
 		this.mockMvc.perform(get("/countries"))
-				.andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$").isArray())
-				.andExpect(jsonPath("$", hasSize(145))).andExpect(jsonPath("$[0].confirmedCases", greaterThan(0)))
-				.andExpect(jsonPath("$[0].deathsNumber", comparesEqualTo(0)))
-				.andExpect(jsonPath("$[0].countryCode", comparesEqualTo("PS")))
-				.andExpect(jsonPath("$[0].countryName", comparesEqualTo("Palestine")))
-				.andExpect(jsonPath("$[100].confirmedCases", greaterThan(0)))
+				.andDo(print()).andExpect(status().isOk())
+				.andExpect(jsonPath("$.*", hasSize(145)))
+				.andExpect(jsonPath("$.ES.confirmedCases",comparesEqualTo(9191)))
+				.andExpect(jsonPath("$.ES.deathsNumber", comparesEqualTo(309)))
+				.andExpect(jsonPath("$.ES.countryCode", comparesEqualTo("ES")))
+				.andExpect(jsonPath("$.ES.countryName", comparesEqualTo("Spain")))
 				.andDo(document("countries/list", preprocessResponse(prettyPrint(), new CropPreprocessor())));
 	}
 
