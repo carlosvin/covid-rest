@@ -43,9 +43,9 @@ public class DatesController {
 	}
 
 	@GetMapping("/{isoDateStr}/countries")
-	public Map<String, CountryStatsDto> getCountries(@Size(min = 10, max = 20) @PathVariable String isoDateStr)
+	public Map<String, CountryStatsDto> getCountries(HttpServletRequest request, @Size(min = 10, max = 20) @PathVariable String isoDateStr)
 			throws NotFoundException {
-		return service.getCountries(DateUtils.convert(isoDateStr)).map(c -> new CountryStatsDto(c))
+		return service.getCountries(DateUtils.convert(isoDateStr)).map(c -> new CountryStatsDto.WithUrl(c, request.getRequestURI()))
 				.collect(Collectors.toMap(c -> ((CountryStatsDto) c).countryCode, c -> (CountryStatsDto) c));
 
 	}

@@ -32,11 +32,9 @@ public class CountriesController {
 	}
 
 	@GetMapping("")
-	public Map<String, CountryStatsDto> getCountries() throws NotFoundException {
-		return this.service.getCountries()
-				.map(c -> new CountryStatsDto(c))
-				.collect(Collectors.toMap(
-						c -> c.countryCode, c -> c ));
+	public Map<String, CountryStatsDto> getCountries(HttpServletRequest request) throws NotFoundException {
+		return this.service.getCountries().map(c -> new CountryStatsDto.WithUrl(c, request.getRequestURI()))
+				.collect(Collectors.toMap(c -> c.countryCode, c -> c));
 	}
 
 	@GetMapping("/{country}")

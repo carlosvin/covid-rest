@@ -83,6 +83,8 @@ class DatesControllerTest {
 			.andExpect(jsonPath("$.ES.confirmedCases", comparesEqualTo(2000)))
             .andExpect(jsonPath("$.ES.deathsNumber",comparesEqualTo(152)))
             .andExpect(jsonPath("$.ES.countryName", comparesEqualTo("Spain")))
+            .andExpect(jsonPath("$.ES.countryCode", comparesEqualTo("ES")))
+            .andExpect(jsonPath("$.ES.path", comparesEqualTo("/dates/2020-03-15/countries/ES")))
 			.andDo(document("dates/date-countries", preprocessResponse(prettyPrint(), new CropPreprocessor())));
 	}
 	
