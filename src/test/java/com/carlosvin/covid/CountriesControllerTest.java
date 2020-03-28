@@ -29,7 +29,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource(properties = { "base.url=data-" })
-@AutoConfigureRestDocs(uriHost = "covid-rest.appspot.com", uriScheme = "https")
+@AutoConfigureRestDocs(uriHost = "covid-rest.appspot.com", uriScheme = "https", uriPort = 80)
 class CountriesControllerTest {
 
 	@TestConfiguration

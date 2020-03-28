@@ -14,7 +14,9 @@
 
 [[overview]]
 == Overview
-Exposes COVID-19 statistics extracted from daily published data by European Centre for Disease Prevention and Control at: https://www.ecdc.europa.eu/en/publications-data/download-todays-data-geographic-distribution-covid-19-cases-worldwide
+Exposes COVID-19 statistics extracted from daily published data by European Centre for Disease Prevention and Control at: https://www.ecdc.europa.eu/en/publications-data/download-todays-data-geographic-distribution-covid-19-cases-worldwide.
+
+TIP: You can find the source code at https://github.com/carlosvin/covid-rest.
 
 == Countries
 === List of country statistics
