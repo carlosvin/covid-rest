@@ -28,5 +28,5 @@ target
 bin
 .classpath
 .settings
-.intellij/
+.idea/
 /covid-rest.iml
