@@ -3,6 +3,8 @@ package com.carlosvin.covid.repositories;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.stream.Stream;
 
 import com.carlosvin.covid.models.CountryStats;
@@ -12,7 +14,7 @@ import com.carlosvin.covid.models.Stats;
 
 public class DateRepo implements Stats {
 	
-	Map<ZonedDateTime, DateModel> dates = new HashMap<>();
+	SortedMap<ZonedDateTime, DateModel> dates = new TreeMap<>();
 	private int confirmed = 0, deaths = 0;
 	
 	public void add(DateCountryStats c) {

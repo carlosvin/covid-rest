@@ -1,8 +1,7 @@
 package com.carlosvin.covid.repositories;
 
 import java.time.ZonedDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.TreeMap;
 
 import com.carlosvin.covid.models.Country;
 import com.carlosvin.covid.models.CountryStats;
@@ -13,12 +12,12 @@ import com.carlosvin.covid.models.Stats;
 public class CountryModel implements CountryStats {
 
 	private final Country country;
-	private final Map<ZonedDateTime, DateStats> datesRepo;
+	private final TreeMap<ZonedDateTime, DateStats> datesRepo;
 	private int confirmed, deaths;
 
 	public CountryModel(Country country) {
 		this.country = country;
-		this.datesRepo = new HashMap<>();
+		this.datesRepo = new TreeMap<>();
 		this.confirmed = this.deaths = 0;
 	}
 
