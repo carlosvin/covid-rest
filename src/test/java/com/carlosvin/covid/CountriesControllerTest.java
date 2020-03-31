@@ -56,6 +56,7 @@ class CountriesControllerTest {
 				.andExpect(jsonPath("$.ES.countryCode", comparesEqualTo("ES")))
 				.andExpect(jsonPath("$.ES.countryName", comparesEqualTo("Spain")))
 				.andExpect(jsonPath("$.ES.path", comparesEqualTo("/countries/ES")))
+				.andExpect(jsonPath("$.VC.countryName", comparesEqualTo("Saint Vincent and the Grenadines")))
 				.andDo(document("countries/list", preprocessResponse(prettyPrint(), new CropPreprocessor())));
 	}
 

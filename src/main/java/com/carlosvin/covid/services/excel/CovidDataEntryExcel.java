@@ -58,7 +58,7 @@ public class CovidDataEntryExcel implements DateCountryStats {
 		private final String countryCode;
 
 		public CountryEntryExcel(Row r) {
-			country = r.getCell(Cells.Country.getValue()).getStringCellValue();
+			country = r.getCell(Cells.Country.getValue()).getStringCellValue().replace('_', ' ');
 			countryCode = r.getCell(Cells.CountryCode.getValue()).getStringCellValue();
 		}
 
