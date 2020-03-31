@@ -1,7 +1,7 @@
 package com.carlosvin.covid.controllers;
 
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Size;
@@ -32,9 +32,12 @@ public class DatesController {
 	}
 
 	@GetMapping
-	public Map<String, DateStatsDto> getDates(HttpServletRequest request) throws NotFoundException {
-		return service.getDates().map(d -> new DateStatsDto.WithUrl(d, request.getRequestURI()))
-				.collect(Collectors.toMap(d -> ((DateStatsDto) d).date, d -> (DateStatsDto) d));
+	public SortedMap<String, DateStatsDto> getDates(HttpServletRequest request) throws NotFoundException {
+		TreeMap <String, DateStatsDto> res = new TreeMap<>();
+		service.getDates()
+			.map(d -> new DateStatsDto.WithUrl(d, request.getRequestURI()))
+			.forEach(d -> res.put(d.date, d));
+		return res;
 	}
 
 	@GetMapping("/{isoDateStr}")
@@ -43,11 +46,14 @@ public class DatesController {
 	}
 
 	@GetMapping("/{isoDateStr}/countries")
-	public Map<String, CountryStatsDto> getCountries(HttpServletRequest request, @Size(min = 10, max = 20) @PathVariable String isoDateStr)
+	public SortedMap<String, CountryStatsDto> getCountries(HttpServletRequest request, @Size(min = 10, max = 20) @PathVariable String isoDateStr)
 			throws NotFoundException {
-		return service.getCountries(DateUtils.convert(isoDateStr)).map(c -> new CountryStatsDto.WithUrl(c, request.getRequestURI()))
-				.collect(Collectors.toMap(c -> ((CountryStatsDto) c).countryCode, c -> (CountryStatsDto) c));
-
+		TreeMap<String, CountryStatsDto> res = new TreeMap<>();
+		service
+			.getCountries(DateUtils.convert(isoDateStr))
+			.map(c -> new CountryStatsDto.WithUrl(c, request.getRequestURI()))
+			.forEach(c -> res.put(c.countryCode, c));
+		return res;
 	}
 
 	@GetMapping("/{isoDateStr}/countries/{country}")
