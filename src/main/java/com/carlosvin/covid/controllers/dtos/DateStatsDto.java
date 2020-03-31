@@ -9,11 +9,13 @@ public class DateStatsDto extends StatsDto {
 	
 	public final ZonedDateTime dateTime;
 	public final String date;
+	public final long epochSeconds;
 
 	public DateStatsDto (DateStats stats) {
 		super(stats);
 		dateTime = stats.getDate();
 		date = DateUtils.toIsoStr(dateTime);
+		epochSeconds = dateTime.toEpochSecond();
 	}
 	
 	public static class WithUrl extends DateStatsDto {
