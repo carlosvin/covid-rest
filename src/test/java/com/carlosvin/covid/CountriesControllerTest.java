@@ -50,7 +50,7 @@ class CountriesControllerTest {
 	void getCountries() throws Exception {
 		this.mockMvc.perform(get("/countries"))
 				.andDo(print()).andExpect(status().isOk())
-				.andExpect(jsonPath("$.*", hasSize(145)))
+				.andExpect(jsonPath("$.*", hasSize(144)))
 				.andExpect(jsonPath("$.ES.confirmedCases",comparesEqualTo(9191)))
 				.andExpect(jsonPath("$.ES.deathsNumber", comparesEqualTo(309)))
 				.andExpect(jsonPath("$.ES.countryCode", comparesEqualTo("ES")))

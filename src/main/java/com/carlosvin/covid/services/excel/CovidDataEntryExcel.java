@@ -8,6 +8,7 @@ import com.carlosvin.covid.models.Country;
 import com.carlosvin.covid.models.DateCountryStats;
 import com.carlosvin.covid.models.DateStats;
 import com.carlosvin.covid.services.DateUtils;
+import com.carlosvin.covid.services.exceptions.InvalidInputParamsException;
 
 enum Cells {
 	Date(0), Cases(4), NewDeaths(5), Country(6), CountryCode(7);
@@ -57,9 +58,13 @@ public class CovidDataEntryExcel implements DateCountryStats {
 		private final String country;
 		private final String countryCode;
 
-		public CountryEntryExcel(Row r) {
-			country = r.getCell(Cells.Country.getValue()).getStringCellValue().replace('_', ' ');
+		public CountryEntryExcel(Row r) throws InvalidInputParamsException {
 			countryCode = r.getCell(Cells.CountryCode.getValue()).getStringCellValue();
+			if (countryCode == null || countryCode.length() != 2) {
+				throw new InvalidInputParamsException("Country code: " + countryCode);
+			}
+			country = r.getCell(Cells.Country.getValue()).getStringCellValue().replace('_', ' ');
+
 		}
 
 		@Override
@@ -77,7 +82,7 @@ public class CovidDataEntryExcel implements DateCountryStats {
 	private final CountryEntryExcel country;
 	private final DateEntryExcel date;
 
-	public CovidDataEntryExcel(Row r) {
+	public CovidDataEntryExcel(Row r) throws InvalidInputParamsException {
 		date = new DateEntryExcel(r);
 		country = new CountryEntryExcel(r);
 	}
