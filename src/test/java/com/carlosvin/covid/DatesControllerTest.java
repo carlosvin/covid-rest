@@ -69,7 +69,8 @@ class DatesControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.confirmedCases", comparesEqualTo(16051)))
             .andExpect(jsonPath("$.deathsNumber",comparesEqualTo(746)))
-            .andExpect(jsonPath("$.dateTime", comparesEqualTo("2020-03-15T00:00:00Z")))
+			.andExpect(jsonPath("$.epochSeconds", comparesEqualTo(1584230400)))
+			.andExpect(jsonPath("$.dateTime", comparesEqualTo("2020-03-15T00:00:00Z")))
             .andExpect(jsonPath("$.date", comparesEqualTo("2020-03-15")));
 	}
 	
