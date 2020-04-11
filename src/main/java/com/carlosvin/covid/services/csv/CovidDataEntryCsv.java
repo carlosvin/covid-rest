@@ -1,6 +1,7 @@
 package com.carlosvin.covid.services.csv;
 
-import java.time.ZonedDateTime;
+
+import java.time.LocalDate;
 
 import com.carlosvin.covid.models.Country;
 import com.carlosvin.covid.models.DateCountryStats;
@@ -14,7 +15,7 @@ public class CovidDataEntryCsv implements DateCountryStats {
     @CsvBindByName(column = "Country/Region", required = true)
     private String country;
     
-    private ZonedDateTime date;
+    private LocalDate date;
     
     @CsvBindByName(column = "Confirmed")
     private int confirmed;
@@ -40,7 +41,7 @@ public class CovidDataEntryCsv implements DateCountryStats {
 			}
 			
 			@Override
-			public ZonedDateTime getDate() {
+			public LocalDate getDate() {
 				return date;
 			}
 		};

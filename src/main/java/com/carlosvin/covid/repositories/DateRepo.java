@@ -1,6 +1,6 @@
 package com.carlosvin.covid.repositories;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.stream.Stream;
@@ -11,13 +11,13 @@ import com.carlosvin.covid.models.DateStats;
 import com.carlosvin.covid.models.Stats;
 
 public class DateRepo implements Stats {
-	
-	SortedMap<ZonedDateTime, DateModel> dates = new TreeMap<>();
+
+	SortedMap<LocalDate, DateModel> dates = new TreeMap<>();
 	private int confirmed = 0, deaths = 0;
-	
+
 	public void add(DateCountryStats c) {
 		DateStats dateStats = c.getDateStats();
-		ZonedDateTime id = dateStats.getDate();
+		LocalDate id = dateStats.getDate();
 		DateModel date = dates.get(id);
 		if (date == null) {
 			date = new DateModel(id);
@@ -38,11 +38,11 @@ public class DateRepo implements Stats {
 		return deaths;
 	}
 
-	public DateStats get(ZonedDateTime date) {
+	public DateStats get(LocalDate date) {
 		return dates.get(date);
 	}
 
-	public Stream<CountryStats> getCountries(ZonedDateTime date) {
+	public Stream<CountryStats> getCountries(LocalDate date) {
 		DateModel d = dates.get(date);
 		if (d != null) {
 			return d.getCountries();
@@ -54,7 +54,7 @@ public class DateRepo implements Stats {
 		return dates.values().stream();
 	}
 
-	public CountryStats get(ZonedDateTime date, String countryCode) {
+	public CountryStats get(LocalDate date, String countryCode) {
 		DateModel d = dates.get(date);
 		if (d != null) {
 			return d.get(countryCode);

@@ -52,9 +52,8 @@ class DatesControllerTest {
 			.andDo(print())
 			.andExpect(status().isOk())
             .andExpect(jsonPath("$.*", hasSize(78)))
-			.andExpect(jsonPath("$.2020-03-15.confirmedCases", comparesEqualTo(16051)))
-            .andExpect(jsonPath("$.2020-03-15.deathsNumber",comparesEqualTo(746)))
-            .andExpect(jsonPath("$.2020-03-15.dateTime", comparesEqualTo("2020-03-15T00:00:00Z")))
+			.andExpect(jsonPath("$.2020-03-15.confirmedCases", comparesEqualTo(8140)))
+            .andExpect(jsonPath("$.2020-03-15.deathsNumber",comparesEqualTo(354)))
             .andExpect(jsonPath("$.2020-03-15.date", comparesEqualTo("2020-03-15")))
             .andExpect(jsonPath("$.2020-03-15.path", comparesEqualTo("/dates/2020-03-15")))
 			.andDo(document("dates/list", preprocessResponse(prettyPrint(), new CropPreprocessor())));
@@ -67,10 +66,9 @@ class DatesControllerTest {
 			.andDo(document("dates/date", preprocessResponse(prettyPrint())))
 			.andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.confirmedCases", comparesEqualTo(16051)))
-            .andExpect(jsonPath("$.deathsNumber",comparesEqualTo(746)))
-			.andExpect(jsonPath("$.epochSeconds", comparesEqualTo(1584230400)))
-			.andExpect(jsonPath("$.dateTime", comparesEqualTo("2020-03-15T00:00:00Z")))
+			.andExpect(jsonPath("$.confirmedCases", comparesEqualTo(8140)))
+            .andExpect(jsonPath("$.deathsNumber",comparesEqualTo(354)))
+			.andExpect(jsonPath("$.epochDay", comparesEqualTo(18336)))
             .andExpect(jsonPath("$.date", comparesEqualTo("2020-03-15")));
 	}
 	
@@ -80,9 +78,9 @@ class DatesControllerTest {
 			.perform(get("/dates/2020-03-15/countries"))
 			.andDo(print())
 			.andExpect(status().isOk())
-            .andExpect(jsonPath("$.*", hasSize(128)))
-			.andExpect(jsonPath("$.ES.confirmedCases", comparesEqualTo(2000)))
-            .andExpect(jsonPath("$.ES.deathsNumber",comparesEqualTo(152)))
+            .andExpect(jsonPath("$.*", hasSize(121)))
+			.andExpect(jsonPath("$.ES.confirmedCases", comparesEqualTo(1522)))
+            .andExpect(jsonPath("$.ES.deathsNumber",comparesEqualTo(15)))
             .andExpect(jsonPath("$.ES.countryName", comparesEqualTo("Spain")))
             .andExpect(jsonPath("$.ES.countryCode", comparesEqualTo("ES")))
             .andExpect(jsonPath("$.ES.path", comparesEqualTo("/dates/2020-03-15/countries/ES")))
@@ -96,7 +94,7 @@ class DatesControllerTest {
 			.andDo(document("dates/date-country", preprocessResponse(prettyPrint())))
 			.andDo(print())
 			.andExpect(status().isOk())
-            .andExpect(jsonPath("$.confirmedCases", comparesEqualTo(1227)))
+            .andExpect(jsonPath("$.confirmedCases", comparesEqualTo(864)))
             .andExpect(jsonPath("$.deathsNumber",comparesEqualTo(37)))
             .andExpect(jsonPath("$.countryName", comparesEqualTo("Spain")));
 	}

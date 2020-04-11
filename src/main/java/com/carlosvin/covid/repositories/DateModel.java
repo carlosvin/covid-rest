@@ -1,6 +1,6 @@
 package com.carlosvin.covid.repositories;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.stream.Stream;
@@ -13,12 +13,12 @@ import com.carlosvin.covid.models.Stats;
 
 class DateModel implements DateStats {
 
-	private final ZonedDateTime date;
+	private final LocalDate date;
 	private final SortedMap<String, CountryStats> countriesRepo;
 	private int confirmed;
 	private int deaths;
 
-	public DateModel(ZonedDateTime zonedDateTime) {
+	public DateModel(LocalDate zonedDateTime) {
 		this.date = zonedDateTime;
 		this.countriesRepo = new TreeMap<>();
 		this.confirmed = this.deaths = 0;
@@ -43,8 +43,8 @@ class DateModel implements DateStats {
 		confirmed += stats.getConfirmed();
 		deaths += stats.getDeaths();
 	}
-	
-	public  ZonedDateTime getCountry() {
+
+	public LocalDate getCountry() {
 		return date;
 	}
 
@@ -57,8 +57,9 @@ class DateModel implements DateStats {
 	public int getDeaths() {
 		return deaths;
 	}
+
 	@Override
-	public ZonedDateTime getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 

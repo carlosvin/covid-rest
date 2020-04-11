@@ -36,7 +36,7 @@ public class DatesController {
 		TreeMap <String, DateStatsDto> res = new TreeMap<>();
 		service.getDates()
 			.map(d -> new DateStatsDto.WithUrl(d, request.getRequestURI()))
-			.forEach(d -> res.put(d.date, d));
+			.forEach(d -> res.put(d.date.toString(), d));
 		return res;
 	}
 

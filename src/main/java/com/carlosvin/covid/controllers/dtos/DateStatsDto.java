@@ -1,21 +1,19 @@
 package com.carlosvin.covid.controllers.dtos;
 
-import java.time.ZonedDateTime;
+
+import java.time.LocalDate;
 
 import com.carlosvin.covid.models.DateStats;
-import com.carlosvin.covid.services.DateUtils;
 
 public class DateStatsDto extends StatsDto {
 	
-	public final ZonedDateTime dateTime;
-	public final String date;
-	public final long epochSeconds;
+	public final LocalDate date;
+	public final long epochDay;
 
 	public DateStatsDto (DateStats stats) {
 		super(stats);
-		dateTime = stats.getDate();
-		date = DateUtils.toIsoStr(dateTime);
-		epochSeconds = dateTime.toEpochSecond();
+		date = stats.getDate();
+		epochDay = date.toEpochDay();
 	}
 	
 	public static class WithUrl extends DateStatsDto {

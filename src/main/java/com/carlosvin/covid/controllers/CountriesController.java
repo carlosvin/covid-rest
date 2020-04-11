@@ -53,7 +53,7 @@ public class CountriesController {
 		service
 			.getDatesByCountry(country)
 			.map(d -> new DateStatsDto.WithUrl(d, request.getRequestURI()))
-			.forEach(d-> res.put(d.date, d));
+			.forEach(d-> res.put(d.date.toString(), d));
 		return res;
 	}
 

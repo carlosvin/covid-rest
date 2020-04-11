@@ -1,6 +1,6 @@
 package com.carlosvin.covid.repositories;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.util.TreeMap;
 
 import com.carlosvin.covid.models.Country;
@@ -12,7 +12,7 @@ import com.carlosvin.covid.models.Stats;
 public class CountryModel implements CountryStats {
 
 	private final Country country;
-	private final TreeMap<ZonedDateTime, DateStats> datesRepo;
+	private final TreeMap<LocalDate, DateStats> datesRepo;
 	private int confirmed, deaths;
 
 	public CountryModel(Country country) {
@@ -62,7 +62,7 @@ public class CountryModel implements CountryStats {
 		return country.getCode();
 	}
 
-	public DateStats get(ZonedDateTime date) {
+	public DateStats get(LocalDate date) {
 		return datesRepo.get(date);
 	}
 

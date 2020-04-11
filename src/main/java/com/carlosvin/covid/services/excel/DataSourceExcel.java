@@ -7,6 +7,7 @@ import java.net.URL;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -58,9 +59,10 @@ public class DataSourceExcel implements DataSource {
 		for (String ext: EXT) {
 			try {
 				URL url = getUrl(daysToSubtract, ext);
+				LOG.info("Fetching stats from: {}", url);
 				return url.openStream();
 			} catch (IOException e) {
-				LOG.info("URL not found {}", e.getMessage());
+				LOG.warn("URL not found {}", e.getMessage());
 			}
 		}
 		throw new IOException("Cannot open stream for any of configured URLs");
@@ -70,20 +72,22 @@ public class DataSourceExcel implements DataSource {
 	public Stream<DateCountryStats> fetchData(int daysToSubtract) throws IOException {
 		
 		try (Workbook wb = StreamingReader.builder()
-		        .rowCacheSize(100)    // number of rows to keep in memory (defaults to 10)
+		        .rowCacheSize(300)    // number of rows to keep in memory (defaults to 10)
 		        .bufferSize(4096)     // buffer size to use when reading InputStream to file (defaults to 1024)
 		        .open(openStream(daysToSubtract))) {
 			List<DateCountryStats> l = new LinkedList<DateCountryStats>();
-
+			HashSet<String> errors = new HashSet<String>();
 			for (Row r: wb.getSheetAt(0)) {
 				try {
 					l.add(new CovidDataEntryExcel(r));
 				} catch (Exception e) {
-					LOG.info("Ignoring row with invalid format: ", r);
+					errors.add(e.getMessage());
 				}
+			}
+			if (errors.size() > 0) {
+				LOG.warn("Ignoring rows with invalid format: {}", String.join(", ", errors));
 			}
 			return l.stream();
 		}
 	}
-
 }

@@ -1,6 +1,6 @@
 package com.carlosvin.covid.repositories;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.util.stream.Stream;
 
 import com.carlosvin.covid.models.CountryStats;
@@ -22,22 +22,22 @@ public interface CovidDataRepository {
 	/**
 	 * @return Country statistics aggregate
 	 * */
-	DateStats getAggregateStats(ZonedDateTime date);
+	DateStats getAggregateStats(LocalDate date);
 	
 	/**
 	 * @return Statistics for a country in a date
 	 * */
-	DateStats getStats(String countryCode, ZonedDateTime date);
+	DateStats getStats(String countryCode, LocalDate date);
 	
 	/**
 	 * @return Statistics for a date in a country
 	 * */
-	CountryStats getStats(ZonedDateTime date, String countryCode);
+	CountryStats getStats(LocalDate date, String countryCode);
 	
 	/**
 	 * @return All statistics by country on that date
 	 * */
-	Stream<CountryStats> getStats(ZonedDateTime date);
+	Stream<CountryStats> getStats(LocalDate date);
 	
 	/**
 	 * @return All date statistics for a country

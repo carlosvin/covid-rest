@@ -1,7 +1,7 @@
 package com.carlosvin.covid.services;
 
 import java.io.IOException;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -91,7 +91,7 @@ public class CovidEntriesServiceImpl implements CovidEntriesService {
 	}
 
 	@Override
-	public DateStats getDate(ZonedDateTime date) throws NotFoundException {
+	public DateStats getDate(LocalDate date) throws NotFoundException {
 		DateStats stats = repo.getAggregateStats(date);
 		if (stats == null) {
 			throw new NotFoundException("There are no stats on " + date);
@@ -100,12 +100,12 @@ public class CovidEntriesServiceImpl implements CovidEntriesService {
 	}
 
 	@Override
-	public Stream<? extends CountryStats> getCountries(ZonedDateTime date) throws NotFoundException {
+	public Stream<? extends CountryStats> getCountries(LocalDate date) throws NotFoundException {
 		return repo.getStats(date);
 	}
 
 	@Override
-	public CountryStats getCountry(ZonedDateTime date, String countryCode) throws NotFoundException {
+	public CountryStats getCountry(LocalDate date, String countryCode) throws NotFoundException {
 		CountryStats stats = repo.getStats(date, countryCode);
 		if (stats == null) {
 			throw new NotFoundException("There are no stats for country " + countryCode + " in date " + date);
@@ -114,7 +114,7 @@ public class CovidEntriesServiceImpl implements CovidEntriesService {
 	}
 
 	@Override
-	public DateStats getDate(String countryCode, ZonedDateTime date) throws NotFoundException {
+	public DateStats getDate(String countryCode, LocalDate date) throws NotFoundException {
 		DateStats stats = repo.getStats(countryCode, date);
 		if (stats == null) {
 			throw new NotFoundException("There are no stats for country " + countryCode + " in date " + date);

@@ -1,14 +1,13 @@
 package com.carlosvin.covid.models;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 
-public interface DateStats extends Stats, Identifiable<ZonedDateTime> {
+public interface DateStats extends Stats, Identifiable<LocalDate> {
 	
-	ZonedDateTime getDate();
+	LocalDate getDate();
 	
 	@Override
-	default ZonedDateTime getId() {
+	default LocalDate getId() {
 		return getDate();
-	}
-	
+	}	
 }

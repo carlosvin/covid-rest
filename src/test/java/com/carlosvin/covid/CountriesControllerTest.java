@@ -73,9 +73,8 @@ class CountriesControllerTest {
 	void getDates() throws Exception {
 		this.mockMvc.perform(get("/countries/ES/dates")).andExpect(status().isOk())
 				.andExpect(jsonPath("$.*", hasSize(78)))
-				.andExpect(jsonPath("$.2020-03-13.confirmedCases", comparesEqualTo(1227)))
+				.andExpect(jsonPath("$.2020-03-13.confirmedCases", comparesEqualTo(864)))
 				.andExpect(jsonPath("$.2020-03-13.deathsNumber", comparesEqualTo(37)))
-				.andExpect(jsonPath("$.2020-03-13.dateTime", comparesEqualTo("2020-03-13T00:00:00Z")))
 				.andExpect(jsonPath("$.2020-03-13.date", comparesEqualTo("2020-03-13")))
 				.andExpect(jsonPath("$.2020-03-13.path", comparesEqualTo("/countries/ES/dates/2020-03-13")))
 				.andExpect(jsonPath("$.2020-03-18").doesNotExist()).andDo(print())
@@ -85,9 +84,8 @@ class CountriesControllerTest {
 	@Test
 	void getDate() throws Exception {
 		this.mockMvc.perform(get("/countries/Es/dates/2020-03-13")).andDo(print()).andExpect(status().isOk())
-				.andExpect(jsonPath("$.confirmedCases", comparesEqualTo(1227)))
+				.andExpect(jsonPath("$.confirmedCases", comparesEqualTo(864)))
 				.andExpect(jsonPath("$.deathsNumber", comparesEqualTo(37)))
-				.andExpect(jsonPath("$.dateTime", comparesEqualTo("2020-03-13T00:00:00Z")))
 				.andExpect(jsonPath("$.date", comparesEqualTo("2020-03-13")))
 				.andDo(document("countries/country-date", preprocessResponse(prettyPrint())));
 	}

@@ -10,20 +10,19 @@ import java.util.Date;
 public class DateUtils {
 	public static final DateTimeFormatter DF = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-	public static ZonedDateTime convert (Date date) {		
-		return convert(date.getTime() / 1000 / 3600 / 24);
+	public static LocalDate convert (Date date) {
+		return date.toInstant()
+	      .atZone(ZoneId.systemDefault())
+	      .toLocalDate();
 	}
 	
 	
-	public static ZonedDateTime convert (long epochDay) {		
-		return LocalDate
-			.ofEpochDay(epochDay)
-		    .atTime(0, 0, 0)
-		    .atZone(ZoneId.of("UTC"));
+	public static LocalDate convert (long epochDay) {		
+		return LocalDate.ofEpochDay(epochDay);
 	}
 
 
-	public static ZonedDateTime convert(Long epochDays, String dateIsoStr) {
+	public static LocalDate convert(Long epochDays, String dateIsoStr) {
 		if (epochDays == null) {
 			return convert(dateIsoStr);
 		} else {
@@ -31,12 +30,9 @@ public class DateUtils {
 		}
 	}
 
-	public static ZonedDateTime convert(String dateIsoStr) {
+	public static LocalDate convert(String dateIsoStr) {
 		TemporalAccessor w = DF.parse(dateIsoStr.substring(0, 10));
-		return LocalDate
-			.from(w)
-		    .atTime(0, 0, 0)
-		    .atZone(ZoneId.of("UTC"));
+		return LocalDate.from(w);
 	}
 
 	public static String toIsoStr(ZonedDateTime date) {

@@ -1,6 +1,6 @@
 package com.carlosvin.covid.services.excel;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 
 import org.apache.poi.ss.usermodel.Row;
 
@@ -27,7 +27,7 @@ enum Cells {
 public class CovidDataEntryExcel implements DateCountryStats {
 
 	static class DateEntryExcel implements DateStats {
-		private final ZonedDateTime date;
+		private final LocalDate date;
 		private final int newConfCases;
 		private final int newDeaths;
 
@@ -48,7 +48,7 @@ public class CovidDataEntryExcel implements DateCountryStats {
 		}
 
 		@Override
-		public ZonedDateTime getDate() {
+		public LocalDate getDate() {
 			return date;
 		}
 	}
