@@ -11,7 +11,7 @@ import com.carlosvin.covid.services.DateUtils;
 import com.carlosvin.covid.services.exceptions.InvalidInputParamsException;
 
 enum Cells {
-	Date(0), Cases(4), NewDeaths(5), Country(6), CountryCode(7);
+	Date(0), Cases(4), NewDeaths(5), CountryCode(6), Country(10);
 
 	private final int value;
 

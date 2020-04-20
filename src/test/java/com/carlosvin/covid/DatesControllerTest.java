@@ -37,7 +37,7 @@ class DatesControllerTest {
         @Bean
         @Primary
         public Clock mockClock() {
-        	return Clock.fixed(Instant.parse("2020-03-17T10:10:30Z"), ZoneId.of("UTC"));
+        	return Clock.fixed(Instant.parse("2020-04-20T10:10:30Z"), ZoneId.of("UTC"));
         }
 
     }
@@ -51,8 +51,8 @@ class DatesControllerTest {
 			.perform(get("/dates"))
 			.andDo(print())
 			.andExpect(status().isOk())
-            .andExpect(jsonPath("$.*", hasSize(78)))
-			.andExpect(jsonPath("$.2020-03-15.confirmedCases", comparesEqualTo(8140)))
+            .andExpect(jsonPath("$.*", hasSize(112)))
+			.andExpect(jsonPath("$.2020-03-15.confirmedCases", comparesEqualTo(11519)))
             .andExpect(jsonPath("$.2020-03-15.deathsNumber",comparesEqualTo(354)))
             .andExpect(jsonPath("$.2020-03-15.date", comparesEqualTo("2020-03-15")))
             .andExpect(jsonPath("$.2020-03-15.path", comparesEqualTo("/dates/2020-03-15")))
@@ -66,7 +66,7 @@ class DatesControllerTest {
 			.andDo(document("dates/date", preprocessResponse(prettyPrint())))
 			.andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.confirmedCases", comparesEqualTo(8140)))
+			.andExpect(jsonPath("$.confirmedCases", comparesEqualTo(11519)))
             .andExpect(jsonPath("$.deathsNumber",comparesEqualTo(354)))
 			.andExpect(jsonPath("$.epochDay", comparesEqualTo(18336)))
             .andExpect(jsonPath("$.date", comparesEqualTo("2020-03-15")));
