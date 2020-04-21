@@ -12,7 +12,7 @@ public interface CovidDataRepository {
 	/**
 	 * Initialises repository data
 	 * */
-	void init(Stream<DateCountryStats> fetchData);
+	void init(Stream<DateCountryStats> fetchData) throws InitializationException;
 	
 	/**
 	 * @return Country statistics aggregate

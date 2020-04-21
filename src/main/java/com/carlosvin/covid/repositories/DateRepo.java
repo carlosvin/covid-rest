@@ -62,4 +62,8 @@ public class DateRepo implements Stats {
 		return null;
 	}
 
+	public boolean isEmpty() {
+		return dates.isEmpty();
+	}
+
 }

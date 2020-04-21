@@ -15,6 +15,7 @@ import com.carlosvin.covid.models.CountryStats;
 import com.carlosvin.covid.models.DateCountryStats;
 import com.carlosvin.covid.models.DateStats;
 import com.carlosvin.covid.repositories.CovidDataRepository;
+import com.carlosvin.covid.repositories.InitializationException;
 import com.carlosvin.covid.services.exceptions.NotFoundException;
 
 @Service
@@ -38,7 +39,7 @@ public class CovidEntriesServiceImpl implements CovidEntriesService {
 	private void scheduledLoad() {
 		try {
 			this.load(source.fetchData());
-		} catch (IOException e) {
+		} catch (IOException|InitializationException e) {
 			String msg = "Problem refreshing repository information";
 			LOG.warn(msg, e);
 			if (lastSaved == 0) {
@@ -50,20 +51,20 @@ public class CovidEntriesServiceImpl implements CovidEntriesService {
 	private void firstLoad() {
 		try {
 			this.load(source.fetchData());
-		} catch (IOException e) {
+		} catch (IOException|InitializationException e) {
 			try {
 				LOG.info("Today's data is not yet available, loading yesterday's: ", e.getMessage());
 				this.load(source.fetchData(1));
-			} catch (IOException e1) {
+			} catch (IOException|InitializationException e1) {
 				LOG.warn(e.getMessage());
 			}
 		}
 	}
 
-	private void load(Stream<DateCountryStats> data) throws IOException {
+	private void load(Stream<DateCountryStats> data) throws InitializationException {
 		repo.init(data);
 		lastSaved = System.currentTimeMillis();
-		LOG.info("Data fetched and loaded into the repository");
+		LOG.info("Data fetched and loaded into the repository");		
 	}
 
 	@Override

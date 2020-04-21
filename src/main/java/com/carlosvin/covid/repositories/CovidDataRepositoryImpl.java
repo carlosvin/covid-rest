@@ -16,7 +16,7 @@ public class CovidDataRepositoryImpl implements CovidDataRepository {
 	DateRepo dates = new DateRepo();
 
 	@Override
-	public void init(Stream<DateCountryStats> fetchData) {
+	public void init(Stream<DateCountryStats> fetchData) throws InitializationException {
 		CountryRepo countriesTmp = new CountryRepo();
 		DateRepo datesTmp = new DateRepo();
 
@@ -24,6 +24,9 @@ public class CovidDataRepositoryImpl implements CovidDataRepository {
 			.filter(c -> c != null)
 			.peek(c -> countriesTmp.add(c))
 			.forEach(c -> datesTmp.add(c));
+		if (countriesTmp.isEmpty() || datesTmp.isEmpty()) {
+			throw new InitializationException();
+		}
 		countries = countriesTmp;
 		dates = datesTmp;
 

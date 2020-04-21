@@ -59,4 +59,8 @@ public class CountryRepo implements Stats {
 		return countries.values();
 	}
 
+	public boolean isEmpty() {
+		return countries.isEmpty();
+	}
+
 }
