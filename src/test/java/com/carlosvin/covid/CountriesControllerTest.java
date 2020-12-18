@@ -28,7 +28,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@TestPropertySource(properties = { "base.url=data-" })
+@TestPropertySource(properties = { "url.excel=data-2020-12-17.xlsx" })
 @AutoConfigureRestDocs(uriHost = "covid-rest.appspot.com", uriScheme = "https", uriPort = 80)
 class CountriesControllerTest {
 
@@ -38,7 +38,7 @@ class CountriesControllerTest {
 		@Bean
 		@Primary
 		public Clock mockClock() {
-			return Clock.fixed(Instant.parse("2020-03-17T10:10:30Z"), ZoneId.of("UTC"));
+			return Clock.fixed(Instant.parse("2020-12-17T10:10:30Z"), ZoneId.of("UTC"));
 		}
 
 	}
@@ -50,9 +50,9 @@ class CountriesControllerTest {
 	void getCountries() throws Exception {
 		this.mockMvc.perform(get("/countries"))
 				.andDo(print()).andExpect(status().isOk())
-				.andExpect(jsonPath("$.*", hasSize(144)))
-				.andExpect(jsonPath("$.ES.confirmedCases",comparesEqualTo(9191)))
-				.andExpect(jsonPath("$.ES.deathsNumber", comparesEqualTo(309)))
+				.andExpect(jsonPath("$.*", hasSize(213)))
+				.andExpect(jsonPath("$.ES.confirmedCases",comparesEqualTo(1730575)))
+				.andExpect(jsonPath("$.ES.deathsNumber", comparesEqualTo(47624)))
 				.andExpect(jsonPath("$.ES.countryCode", comparesEqualTo("ES")))
 				.andExpect(jsonPath("$.ES.countryName", comparesEqualTo("Spain")))
 				.andExpect(jsonPath("$.ES.path", comparesEqualTo("/countries/ES")))
@@ -63,8 +63,8 @@ class CountriesControllerTest {
 	@Test
 	void getACountry() throws Exception {
 		this.mockMvc.perform(get("/countries/ES")).andDo(document("countries/country")).andDo(print())
-				.andExpect(status().isOk()).andExpect(jsonPath("$.confirmedCases", comparesEqualTo(9191)))
-				.andExpect(jsonPath("$.deathsNumber", comparesEqualTo(309)))
+				.andExpect(status().isOk()).andExpect(jsonPath("$.confirmedCases", comparesEqualTo(1730575)))
+				.andExpect(jsonPath("$.deathsNumber", comparesEqualTo(47624)))
 				.andExpect(jsonPath("$.countryCode", comparesEqualTo("ES")))
 				.andExpect(jsonPath("$.countryName", comparesEqualTo("Spain")));
 	}
@@ -72,19 +72,19 @@ class CountriesControllerTest {
 	@Test
 	void getDates() throws Exception {
 		this.mockMvc.perform(get("/countries/ES/dates")).andExpect(status().isOk())
-				.andExpect(jsonPath("$.*", hasSize(78)))
-				.andExpect(jsonPath("$.2020-03-13.confirmedCases", comparesEqualTo(864)))
+				.andExpect(jsonPath("$.*", hasSize(349)))
+				.andExpect(jsonPath("$.2020-03-13.confirmedCases", comparesEqualTo(1531)))
 				.andExpect(jsonPath("$.2020-03-13.deathsNumber", comparesEqualTo(37)))
 				.andExpect(jsonPath("$.2020-03-13.date", comparesEqualTo("2020-03-13")))
 				.andExpect(jsonPath("$.2020-03-13.path", comparesEqualTo("/countries/ES/dates/2020-03-13")))
-				.andExpect(jsonPath("$.2020-03-18").doesNotExist()).andDo(print())
+				.andExpect(jsonPath("$.2019-03-18").doesNotExist()).andDo(print())
 				.andDo(document("countries/country-dates", preprocessResponse(prettyPrint(), new CropPreprocessor())));
 	}
 
 	@Test
 	void getDate() throws Exception {
 		this.mockMvc.perform(get("/countries/Es/dates/2020-03-13")).andDo(print()).andExpect(status().isOk())
-				.andExpect(jsonPath("$.confirmedCases", comparesEqualTo(864)))
+				.andExpect(jsonPath("$.confirmedCases", comparesEqualTo(1531)))
 				.andExpect(jsonPath("$.deathsNumber", comparesEqualTo(37)))
 				.andExpect(jsonPath("$.date", comparesEqualTo("2020-03-13")))
 				.andDo(document("countries/country-date", preprocessResponse(prettyPrint())));

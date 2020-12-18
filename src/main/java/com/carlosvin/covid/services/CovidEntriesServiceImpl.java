@@ -53,7 +53,7 @@ public class CovidEntriesServiceImpl implements CovidEntriesService {
 			this.load(source.fetchData());
 		} catch (IOException|InitializationException e) {
 			try {
-				LOG.info("Today's data is not yet available, loading yesterday's: ", e.getMessage());
+				LOG.info("Today's data is not yet available, loading yesterday's: {}", e.getMessage());
 				this.load(source.fetchData(1));
 			} catch (IOException|InitializationException e1) {
 				LOG.warn(e.getMessage());

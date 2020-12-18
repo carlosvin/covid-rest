@@ -29,7 +29,6 @@ public class CovidDataRepositoryImpl implements CovidDataRepository {
 		}
 		countries = countriesTmp;
 		dates = datesTmp;
-
 	}
 
 	@Override

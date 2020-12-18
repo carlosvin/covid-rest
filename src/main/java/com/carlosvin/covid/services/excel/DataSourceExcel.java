@@ -1,12 +1,10 @@
 package com.carlosvin.covid.services.excel;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.Clock;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,25 +26,21 @@ import com.monitorjbl.xlsx.StreamingReader;
 @Service
 @PropertySource("classpath:application.properties")
 public class DataSourceExcel implements DataSource {
-	private static String [] EXT = {".xlsx", ".xls"};
 	private static final Logger LOG = LoggerFactory.getLogger(DataSourceExcel.class);
-	private static final DateTimeFormatter DF = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	
-	private final String baseUrl;
-	private final Clock clock;
+	private final String url;
 	
 	@Autowired
-	public DataSourceExcel(@Value("${base.url.excel}") String baseUrl, Clock clock) throws IOException {
-		this.baseUrl = baseUrl;
-		this.clock = clock;
+	public DataSourceExcel(@Value("${url.excel}") String url) {
+		this.url = url;
 	}
 
-	public URL getUrl(int daysToSubtract, String ext) {
-		String urlStr = String.format(baseUrl + DF.format(LocalDate.now(clock).minusDays(daysToSubtract)) + ext);
+	public URL getUrl() {
 		try {
-			return new URL(urlStr);
+			return new URL(url);
 		} catch (MalformedURLException e) {
-			return getClass().getClassLoader().getResource(urlStr);
+			var cl = getClass().getClassLoader();
+			return cl.getResource(url);
 		}
 	}
 
@@ -55,17 +49,10 @@ public class DataSourceExcel implements DataSource {
 		return fetchData(0);
 	}
 	
-	private InputStream openStream (int daysToSubtract) throws IOException {
-		for (String ext: EXT) {
-			try {
-				URL url = getUrl(daysToSubtract, ext);
-				LOG.info("Fetching stats from: {}", url);
-				return url.openStream();
-			} catch (IOException e) {
-				LOG.warn("URL not found {}", e.getMessage());
-			}
-		}
-		throw new IOException("Cannot open stream for any of configured URLs");
+	private InputStream openStream () throws IOException {
+		var urlTarget = getUrl();
+		LOG.info("Fetching stats from: {}", urlTarget);
+		return urlTarget.openStream();
 	}
 	
 	@Override
@@ -74,9 +61,9 @@ public class DataSourceExcel implements DataSource {
 		try (Workbook wb = StreamingReader.builder()
 		        .rowCacheSize(300)    // number of rows to keep in memory (defaults to 10)
 		        .bufferSize(4096)     // buffer size to use when reading InputStream to file (defaults to 1024)
-		        .open(openStream(daysToSubtract))) {
-			List<DateCountryStats> l = new LinkedList<DateCountryStats>();
-			HashSet<String> errors = new HashSet<String>();
+		        .open(openStream())) {
+			List<DateCountryStats> l = new LinkedList<>();
+			HashSet<String> errors = new HashSet<>();
 			for (Row r: wb.getSheetAt(0)) {
 				try {
 					l.add(new CovidDataEntryExcel(r));
@@ -84,7 +71,7 @@ public class DataSourceExcel implements DataSource {
 					errors.add(e.getMessage());
 				}
 			}
-			if (errors.size() > 0) {
+			if (!errors.isEmpty()) {
 				LOG.warn("Ignoring rows with invalid format: {}", String.join(", ", errors));
 			}
 			return l.stream();

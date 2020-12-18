@@ -27,7 +27,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@TestPropertySource(properties = { "base.url=data-" })
+@TestPropertySource(properties = { "url.excel=data-2020-12-17.xlsx" })
 @AutoConfigureRestDocs(uriHost = "covid-rest.appspot.com", uriScheme = "https", uriPort=80)
 class DatesControllerTest {
 	
@@ -51,9 +51,9 @@ class DatesControllerTest {
 			.perform(get("/dates"))
 			.andDo(print())
 			.andExpect(status().isOk())
-            .andExpect(jsonPath("$.*", hasSize(78)))
-			.andExpect(jsonPath("$.2020-03-15.confirmedCases", comparesEqualTo(8140)))
-            .andExpect(jsonPath("$.2020-03-15.deathsNumber",comparesEqualTo(354)))
+            .andExpect(jsonPath("$.*", hasSize(350)))
+			.andExpect(jsonPath("$.2020-03-15.confirmedCases", comparesEqualTo(12191)))
+            .andExpect(jsonPath("$.2020-03-15.deathsNumber",comparesEqualTo(367)))
             .andExpect(jsonPath("$.2020-03-15.date", comparesEqualTo("2020-03-15")))
             .andExpect(jsonPath("$.2020-03-15.path", comparesEqualTo("/dates/2020-03-15")))
 			.andDo(document("dates/list", preprocessResponse(prettyPrint(), new CropPreprocessor())));
@@ -66,8 +66,8 @@ class DatesControllerTest {
 			.andDo(document("dates/date", preprocessResponse(prettyPrint())))
 			.andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.confirmedCases", comparesEqualTo(8140)))
-            .andExpect(jsonPath("$.deathsNumber",comparesEqualTo(354)))
+			.andExpect(jsonPath("$.confirmedCases", comparesEqualTo(12191)))
+            .andExpect(jsonPath("$.deathsNumber",comparesEqualTo(367)))
 			.andExpect(jsonPath("$.epochDay", comparesEqualTo(18336)))
             .andExpect(jsonPath("$.date", comparesEqualTo("2020-03-15")));
 	}
@@ -78,8 +78,8 @@ class DatesControllerTest {
 			.perform(get("/dates/2020-03-15/countries"))
 			.andDo(print())
 			.andExpect(status().isOk())
-            .andExpect(jsonPath("$.*", hasSize(121)))
-			.andExpect(jsonPath("$.ES.confirmedCases", comparesEqualTo(1522)))
+            .andExpect(jsonPath("$.*", hasSize(123)))
+			.andExpect(jsonPath("$.ES.confirmedCases", comparesEqualTo(2144)))
             .andExpect(jsonPath("$.ES.deathsNumber",comparesEqualTo(15)))
             .andExpect(jsonPath("$.ES.countryName", comparesEqualTo("Spain")))
             .andExpect(jsonPath("$.ES.countryCode", comparesEqualTo("ES")))
@@ -89,12 +89,13 @@ class DatesControllerTest {
 	
 	@Test
 	void getCountry() throws Exception {
+		var u = getClass().getClassLoader().getResource("data-2020-12-17.xlsx");
 		this.mockMvc
 			.perform(get("/dates/2020-03-13/countries/eS"))
 			.andDo(document("dates/date-country", preprocessResponse(prettyPrint())))
 			.andDo(print())
 			.andExpect(status().isOk())
-            .andExpect(jsonPath("$.confirmedCases", comparesEqualTo(864)))
+            .andExpect(jsonPath("$.confirmedCases", comparesEqualTo(1531)))
             .andExpect(jsonPath("$.deathsNumber",comparesEqualTo(37)))
             .andExpect(jsonPath("$.countryName", comparesEqualTo("Spain")));
 	}
